@@ -1,4 +1,4 @@
-package project1_1.Code;
+package project1_1;
 
 import java.util.ArrayList;
 

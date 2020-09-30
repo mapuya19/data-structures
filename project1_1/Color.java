@@ -1,4 +1,4 @@
-package project1_1.Code;
+package project1_1;
 
 /**
  * This class represents a color. 
