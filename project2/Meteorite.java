@@ -46,7 +46,7 @@ public class Meteorite implements Comparable<Meteorite> {
 
     @Override
     public int compareTo(Meteorite o) {
-        if (o.name.equals(this.name)) {
+        if (o.name.equalsIgnoreCase(this.name)) {
             if (o.id == o.id) {
                 return 0;
             } else {
@@ -61,8 +61,8 @@ public class Meteorite implements Comparable<Meteorite> {
     public boolean equals(Object o) {
         Meteorite meteorite = (Meteorite) o;
 
-        String name1 = meteorite.name.toLowerCase();
-        String name2 = this.name.toLowerCase();
+        String name1 = meteorite.name;
+        String name2 = this.name;
 
         if (o == this) { 
             return true; 
@@ -72,7 +72,7 @@ public class Meteorite implements Comparable<Meteorite> {
             return false; 
         } 
         
-        if (name1.equals(name2) && meteorite.id == this.id) {
+        if (name1.equalsIgnoreCase(name2) && meteorite.id == this.id) {
             return true;
         } else {
             return false;
