@@ -1,23 +1,105 @@
 package project2;
-import java.util.Scanner;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.io.File;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
 
 public class FallenStars {
     public static void main(String[] args) {
-//        Location loc = new Location(10, 30);
+        if (args.length == 0 ) {
+            System.err.println("Usage Error: the program expects file name as an argument.\n");
+            System.exit(1);
+        }
+
+        File csv = new File(args[0]);
+
+        if (!csv.exists()){
+            System.err.println("Error: the file " + csv.getAbsolutePath()+ " does not exist.\n");
+            System.exit(1);
+        }
+        if (!csv.canRead()){
+            System.err.println("Error: the file " + csv.getAbsolutePath()+
+                    " cannot be opened for reading.\n");
+            System.exit(1);
+        }
+
+        Scanner inCsv = null;
+
+        try {
+            inCsv = new Scanner(csv);
+        } catch (FileNotFoundException e) {
+            System.err.println("Error: the file " + csv.getAbsolutePath() +
+                    " cannot be opened for reading.\n");
+            System.exit(1);
+        }
+
+        MeteoriteList meteorites = new MeteoriteList();
+        ArrayList<String> tempList = new ArrayList<String>();
+
+        String line = null;
+
+        // Skip First Line
+        inCsv.nextLine();
+
+        while (inCsv.hasNextLine()) {
+            try {
+                line = inCsv.nextLine();
+                tempList = splitCSVLine(line);
+            } catch (NoSuchElementException ex ) {
+                //caused by an incomplete or miss-formatted line in the input file
+                System.err.println(line);
+                continue;
+            }
+
+
+            try {
+                String tempName = tempList.get(0);
+                int tempId = Integer.parseInt(tempList.get(1));
+
+                Meteorite tempMeteorite = new Meteorite(tempName, tempId);
+
+                try {
+                    tempMeteorite.setMass(Integer.parseInt(tempList.get(4)));
+                } catch (Exception e) {
+                    //ignore this exception and skip to the next line
+                }
+
+                try {
+                    tempMeteorite.setYear(Integer.parseInt(tempList.get(6).substring(6,10)));
+                } catch (Exception e){
+                    //ignore this exception and skip to the next line
+                }
+
+                try {
+                    Location tempLocation = new Location(Double.parseDouble(tempList.get(7)), Double.parseDouble(tempList.get(8)));
+                    tempMeteorite.setLocation(tempLocation);
+                } catch (Exception e) {
+                    //ignore this exception and skip to the next line
+                }
+
+                meteorites.add(tempMeteorite);
+            } catch (IllegalArgumentException ex) {
+                //ignore this exception and skip to the next line
+            }
+        }
+
+//        System.out.println("Parsed!");
 //
-//        Meteorite test = new Meteorite("Test", 30);
-//        test.setMass(45);
-//        test.setLocation(loc);
-//        test.setYear(2020);
-//
-//        System.out.println(test);
-//        System.out.println("Test complete!");
-//
-//        MeteoriteLinkedList theList = new MeteoriteLinkedList();
-//        theList.add(test);
-//
-//        System.out.println(theList);
+//        for (Meteorite meteorite : meteorites) {
+//            System.out.println(meteorite);
+//        }
+
+        System.out.print(
+                "Search the database by using one of the following queries.\n" +
+                "\t  To search for meteorite nearest to a given geo-location, enter\n" +
+                "\t        location LATITUDE LONGITUDE\n" +
+                "\t  To search for meteorites that fell in a given year, enter\n" +
+                "\t        year YEAR\n" +
+                "\t  To search for meteorites with weights MASS +/- 10 grams, enter\n" +
+                "\t        mass MASS\n" +
+                "\t  To finish the program, enter\n" +
+                "\t        quit\n");
     }
 
     /**

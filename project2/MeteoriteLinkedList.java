@@ -16,7 +16,6 @@ public class MeteoriteLinkedList {
     }
 
     public boolean add(Meteorite m) {
-
         if (m == null) {
             throw new IllegalArgumentException("Invalid parameter.");
         } else {

@@ -1,8 +1,8 @@
 package project2;
 
 public class Meteorite implements Comparable<Meteorite> {
-    private final String name;
-    private final int id;
+    private String name;
+    private int id;
     private int mass;
     private int year;
     private Location location;
@@ -16,15 +16,23 @@ public class Meteorite implements Comparable<Meteorite> {
         }
     }
 
-    public void setMass(int mass) {
-        this.mass = mass;
+    public void setMass(int mass) throws IllegalArgumentException {
+        if (mass <= 0) {
+            throw new IllegalArgumentException("Mass must be positive integer.");
+        } else {
+            this.mass = mass;
+        }
     }
 
-    public void setYear(int year) {
-        this.year = year;
+    public void setYear(int year) throws IllegalArgumentException {
+        if (year <= 0) {
+            throw new IllegalArgumentException("Year must be a positive integer.");
+        } else {
+            this.year = year;
+        }
     }
 
-    public void setLocation(Location loc) {
+    public void setLocation(Location loc) throws IllegalArgumentException {
         this.location = loc;
     }
 
@@ -49,12 +57,10 @@ public class Meteorite implements Comparable<Meteorite> {
         if (o.name.equalsIgnoreCase(this.name)) {
             if (o.id == this.id) {
                 return 0;
-            } else {
-                return -1;
             }
         }
-        
-        return -1;
+
+        return o.name.toLowerCase().compareTo(this.name);
     }
 
     @Override
@@ -81,8 +87,31 @@ public class Meteorite implements Comparable<Meteorite> {
 
     @Override
     public String toString(){
-        String info = String.format("%s %d %d %d %f %f", this.name, this.id, this.year, this.mass, this.location.getLatitude(), this.location.getLongitude());
+        String year;
+        String mass;
+        String lat;
+        String lng;
 
-        return info;
+        try {
+            year = Integer.toString(this.year);
+        } catch (Exception e) {
+            year = "";
+        }
+
+        try {
+            mass = Double.toString(this.mass);
+        } catch (Exception e) {
+            mass = "";
+        }
+
+        if (this.location == null) {
+            lat = "";
+            lng = "";
+        } else {
+            lat = Double.toString(this.location.getLatitude());
+            lng = Double.toString(this.location.getLongitude());
+        }
+
+        return String.format("%s %d %s %s %s %s", this.name, this.id, year, mass, lat, lng);
     }
 }

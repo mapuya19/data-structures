@@ -7,7 +7,7 @@ public class Location {
     private double lng;
 
     public Location(double latitude, double longitude) throws IllegalArgumentException {
-        if (latitude <= -90 || latitude >= 90 || longitude <= -90  || longitude >= 90) {
+        if (latitude <= -90 || latitude >= 90 || longitude <= -180  || longitude >= 180) {
             throw new IllegalArgumentException("Invalid parameters.");
         } else {
             this.lat = latitude;
