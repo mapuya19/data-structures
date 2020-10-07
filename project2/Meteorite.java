@@ -1,8 +1,8 @@
 package project2;
 
 public class Meteorite implements Comparable<Meteorite> {
-    private String name;
-    private int id;
+    private final String name;
+    private final int id;
     private int mass;
     private int year;
     private Location location;
@@ -64,7 +64,7 @@ public class Meteorite implements Comparable<Meteorite> {
         String name1 = meteorite.name;
         String name2 = this.name;
 
-        if (o == this) { 
+        if (o == this) {
             return true; 
         }
 

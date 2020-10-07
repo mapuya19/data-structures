@@ -1,5 +1,4 @@
 package project2;
-
 import java.util.ArrayList;
 
 public class MeteoriteList extends ArrayList<Meteorite>{
@@ -9,15 +8,15 @@ public class MeteoriteList extends ArrayList<Meteorite>{
         this.storage = new ArrayList<Meteorite>();
     }
 
-    public MeteoriteLinkedList getByMass (int mass, int delta) {
+    public MeteoriteLinkedList getByMass(int mass, int delta) {
         MeteoriteLinkedList massMatches = new MeteoriteLinkedList();
 
         if (mass < 0 || delta < 0) {
             throw new IllegalArgumentException("Invalid parameter.");
         } else {
-            for (int i = 0; i < this.storage.size(); i++) {
-                if (this.storage.get(i).getMass() >= mass - delta || this.storage.get(i).getMass() <= mass + delta) {
-                    massMatches.add(this.storage.get(i));
+            for (Meteorite meteorite : this.storage) {
+                if (meteorite.getMass() >= mass - delta || meteorite.getMass() <= mass + delta) {
+                    massMatches.add(meteorite);
                 }
             }
         }
@@ -25,7 +24,7 @@ public class MeteoriteList extends ArrayList<Meteorite>{
         return massMatches;
     }
 
-    public Meteorite getByLocation (Location loc) throws IllegalArgumentException {
+    public Meteorite getByLocation(Location loc) throws IllegalArgumentException {
         Meteorite nearest = new Meteorite("nearest", 1337);
 
         if (loc == null) {

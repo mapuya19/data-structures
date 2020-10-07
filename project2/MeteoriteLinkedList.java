@@ -2,11 +2,11 @@ package project2;
 
 public class MeteoriteLinkedList {
     Node head;
-    Node current;
+    Node tail;
 
     public MeteoriteLinkedList() {
         head = null;
-        current = null;
+        tail = null;
     }
 
     public MeteoriteLinkedList(MeteoriteList list) {
@@ -16,22 +16,37 @@ public class MeteoriteLinkedList {
     }
 
     public boolean add(Meteorite m) {
+
         if (m == null) {
             throw new IllegalArgumentException("Invalid parameter.");
         } else {
+            // Check if node already exists in LinkedList
+            Node check = this.head;
+
+            while (check != null && !check.data.equals(m)) {
+                check = check.next;
+
+                if(check.data.equals(m)) {
+                    return false;
+                }
+            }
+
+            Node n = new Node(m);
             // Add at beginning
             if (this.head == null) {
-                this.head = new Node(m);
+                n.next = head;
+                head = n;
             } 
             
             // Add at end
-            else if (this.current == null) {
-                Node temp = this.head;
+            else {
+                Node current = this.head;
 
-                while(temp.next != null)
-                    temp = temp.next;
-    
-                temp.next = new Node(m);
+                while(current.next != null) {
+                    n.next = current.next;
+                }
+
+                current.next = n;
             }
 
             return true;
@@ -39,22 +54,57 @@ public class MeteoriteLinkedList {
     }
 
     public Meteorite remove(String name, int id) {
+        Meteorite toMatch = new Meteorite(name, id);
+        Meteorite removed = new Meteorite("removed", 1338);
 
-        return null;
-    }
+        if(head.next == null) {
+            head = null;
+            tail = null;
+        }
 
-    public static void navNext(MeteoriteLinkedList linkedList){
-        if (linkedList.current == null)
-            linkedList.current = linkedList.head;
+        if(head.data.equals(toMatch)) {
+            removed = head.data;
+            head = head.next;
 
-        else
-            linkedList.current = linkedList.current.next;
+            if (head == null)
+                tail = null;
+
+            return removed;
+        } else {
+            Node current = head;
+
+            while (current.next != null) {
+                if (current.data.equals(toMatch)) {
+                    removed = current.data;
+                    current.next = current.next.next;
+
+                    return removed;
+                }
+
+                current = current.next;
+            }
+        }
+
+        return removed;
     }
 
     @Override
     public String toString() {
+        StringBuilder temp = new StringBuilder();
+        Node current = head;
 
-        return "not implemented yet";
+        if (head != null && current.next == null) {
+            temp.append(current.toString());
+        }
+
+        while (current.next != null) {
+            temp.append(current.toString());
+            temp.append(", ");
+
+            current = current.next;
+        }
+
+        return temp.toString();
     }
     
     private class Node implements Comparable<Node> {
@@ -75,7 +125,7 @@ public class MeteoriteLinkedList {
                 return false;
             }
             Node other = (Node) o;
-            if (!this.data.equals(other.data)) {
+            if(!this.data.equals(other.data)) {
                 return false;
             }
             return true;
