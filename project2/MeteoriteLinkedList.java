@@ -22,12 +22,12 @@ public class MeteoriteLinkedList {
             // Check if node already exists in LinkedList
             Node check = this.head;
 
-            while (check != null && !check.data.equals(m)) {
-                check = check.next;
-
+            while (check != null) {
                 if(check.data.equals(m)) {
                     return false;
                 }
+
+                check = check.next;
             }
 
             Node n = new Node(m);
@@ -42,7 +42,7 @@ public class MeteoriteLinkedList {
                 Node current = this.head;
 
                 while(current.next != null) {
-                    n.next = current.next;
+                    current = current.next;
                 }
 
                 current.next = n;
@@ -98,7 +98,7 @@ public class MeteoriteLinkedList {
 
         while (current.next != null) {
             temp.append(current.toString());
-            temp.append(", ");
+            temp.append(", \n");
 
             current = current.next;
         }

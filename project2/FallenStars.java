@@ -1,4 +1,6 @@
 package project2;
+import project1_1.Color;
+
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.io.File;
@@ -84,11 +86,7 @@ public class FallenStars {
             }
         }
 
-//        System.out.println("Parsed!");
-//
-//        for (Meteorite meteorite : meteorites) {
-//            System.out.println(meteorite);
-//        }
+        inCsv.close();
 
         System.out.print(
                 "Search the database by using one of the following queries.\n" +
@@ -100,6 +98,32 @@ public class FallenStars {
                 "\t        mass MASS\n" +
                 "\t  To finish the program, enter\n" +
                 "\t        quit\n");
+
+        Scanner userInput = new Scanner(System.in);
+        String command;
+
+        do {
+            System.out.println("Enter your search query:");
+            command = userInput.nextLine();
+
+            if (!command.equalsIgnoreCase("quit")) {
+                if (command.matches("\\b(location)\\b.*")) {
+                    System.out.println("Location command!");
+                } else if (command.matches("\\b(year)\\b.*")) {
+                    String[] inputStrings = command.split(" ");
+                    MeteoriteLinkedList yearOutput = meteorites.getByYear(Integer.parseInt(inputStrings[1]));
+
+                    System.out.println(yearOutput.toString());
+                } else if (command.matches("\\b(mass)\\b.*")) {
+                    System.out.println("Mass command!");
+                } else if (command.matches("\\b(quit)\\b.*")){
+                    System.exit(0);
+                } else {
+                    System.out.println("This is not valid query. Please try again.");
+                }
+            }
+
+        } while (!command.equalsIgnoreCase("quit"));
     }
 
     /**

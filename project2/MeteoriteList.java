@@ -46,7 +46,7 @@ public class MeteoriteList extends ArrayList<Meteorite>{
         if (year < 0) {
             throw new IllegalArgumentException("Invalid parameter.");
         } else {
-            for (Meteorite meteorite : this.storage) {
+            for (Meteorite meteorite : this) {
                 if (meteorite.getYear() == year) {
                     yearMatches.add(meteorite);
                 }
