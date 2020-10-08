@@ -72,23 +72,25 @@ public class FallenStars {
 
                 try {
                     tempMeteorite.setMass(Integer.parseInt(tempList.get(4)));
-                } catch (Exception e) {
-                    //ignore this exception and skip to the next line
-                }
-
-                try {
-                    tempMeteorite.setYear(Integer.parseInt(tempList.get(6).substring(6,10)));
-                } catch (Exception e){
-                    //ignore this exception and skip to the next line
-                }
-
-                try {
-                    Location tempLocation = new Location(Double.parseDouble(tempList.get(7)), Double.parseDouble(tempList.get(8)));
-                    tempMeteorite.setLocation(tempLocation);
                 } catch (IllegalArgumentException ex) {
                     //ignore this exception and skip to the next line
                 }
 
+                try {
+                    if (!tempList.get(6).isEmpty()) {
+                        tempMeteorite.setYear(Integer.parseInt(tempList.get(6).substring(6,10)));
+                    }
+                } catch (IllegalArgumentException ex){
+                    //ignore this exception and skip to the next line
+                }
+
+                Location tempLocation = new Location(Double.parseDouble(tempList.get(7)), Double.parseDouble(tempList.get(8)));
+
+                if (tempLocation == null) {
+                    //skip
+                } else {
+                    tempMeteorite.setLocation(tempLocation);
+                }
 
                 meteorites.add(tempMeteorite);
             } catch (IllegalArgumentException ex) {

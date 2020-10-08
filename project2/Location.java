@@ -78,7 +78,7 @@ public class Location {
     public boolean equals(Object o) {
         Location loc = (Location) o;
 
-        if (o == this) { 
+        if (o == this || (loc.lat == this.lat && loc.lng == this.lng)) {
             return true; 
         }
         

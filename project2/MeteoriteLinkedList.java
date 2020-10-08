@@ -144,11 +144,7 @@ public class MeteoriteLinkedList {
         Node current = head;
 
         while(current.next != null){
-            output += current.data;
-
-            if (current.next != null){
-                output += "\n";
-            }
+            output = output + current.data + "\n";
 
             current = current.next;
         }

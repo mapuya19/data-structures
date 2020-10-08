@@ -27,7 +27,7 @@ public class MeteoriteList extends ArrayList<Meteorite>{
             throw new IllegalArgumentException("Mass must be a positive integer.");
         } else {
             for (Meteorite meteorite : this) {
-                if (meteorite.getMass() >= mass - delta && meteorite.getMass() <= mass + delta) {
+                if (meteorite.getMass() >= mass - delta && meteorite.getMass() <= mass + delta && meteorite.getMass() != 0) {
                     massMatches.add(meteorite);
                 }
             }
@@ -49,7 +49,7 @@ public class MeteoriteList extends ArrayList<Meteorite>{
      */
     public Meteorite getByLocation(Location loc) throws IllegalArgumentException {
         if (loc == null) {
-            throw new IllegalArgumentException("Location is null.");
+            throw new IllegalArgumentException("Location must not be null.");
         }
 
         if (this.size() == 0) {
@@ -68,7 +68,7 @@ public class MeteoriteList extends ArrayList<Meteorite>{
         Meteorite nearest = new Meteorite("nearest", 1337);
 
         for (Meteorite meteorite : this) {
-            if (meteorite.getLocation() == loc) {
+            if (meteorite.getLocation().equals(loc)) {
                 nearest = meteorite;
             } else {
                 if (meteorite.getLocation() != null) {

@@ -134,7 +134,7 @@ public class Meteorite implements Comparable<Meteorite> {
     @Override
     public String toString(){
         String year = Integer.toString(this.year);
-        String id;
+        String id = Integer.toString(this.id);;
         int mass = this.mass;
         Double lat;
         Double lng;
@@ -143,8 +143,6 @@ public class Meteorite implements Comparable<Meteorite> {
         if (this.year == 0) {
             year = "";
         }
-
-        id = Integer.toString(this.id);
 
         // If location is null, display blank and return formatted String. Otherwise, set latitude and longitude.
         if (this.location == null) {
