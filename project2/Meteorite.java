@@ -8,8 +8,8 @@ public class Meteorite implements Comparable<Meteorite> {
     private Location location;
 
     public Meteorite(String name, int id) throws IllegalArgumentException {
-        if (name == null || id <= 0) {
-            throw new IllegalArgumentException("Invalid parameter!");
+        if (name == null || name.equals("") || id <= 0) {
+            throw new IllegalArgumentException("Meteorite must have name and id must be an integer greater than zero.");
         } else {
             this.name = name;
             this.id = id;
@@ -25,8 +25,8 @@ public class Meteorite implements Comparable<Meteorite> {
     }
 
     public void setYear(int year) throws IllegalArgumentException {
-        if (year <= 0) {
-            throw new IllegalArgumentException("Year must be a positive integer.");
+        if (year <= 0 || year >= 2020) {
+            throw new IllegalArgumentException("Year must be a positive integer less than the current year.");
         } else {
             this.year = year;
         }
@@ -54,13 +54,25 @@ public class Meteorite implements Comparable<Meteorite> {
 
     @Override
     public int compareTo(Meteorite o) {
-        if (o.name.equalsIgnoreCase(this.name)) {
-            if (o.id == this.id) {
-                return 0;
+        if (o.name.equalsIgnoreCase(this.name) && (o.id == this.id)) {
+            return 0;
+        }
+
+        if (this.name.equalsIgnoreCase(o.name)) {
+            if (this.id < o.id) {
+                return -1;
+            } else {
+                return 1;
             }
         }
 
-        return o.name.toLowerCase().compareTo(this.name);
+        if (this.name.compareToIgnoreCase(o.name) < 0) {
+            return -1;
+        } else if (this.name.compareToIgnoreCase(o.name) > 0) {
+            return 1;
+        }
+
+        return this.name.compareToIgnoreCase(o.name);
     }
 
     @Override
@@ -87,31 +99,34 @@ public class Meteorite implements Comparable<Meteorite> {
 
     @Override
     public String toString(){
-        String year;
-        String mass;
-        String lat;
-        String lng;
+        String year = Integer.toString(this.year);
+        String id;
+        int mass = this.mass;
+        Double lat;
+        Double lng;
 
-        try {
-            year = Integer.toString(this.year);
-        } catch (Exception e) {
+        if (this.year == 0) {
             year = "";
         }
 
-        try {
-            mass = Double.toString(this.mass);
-        } catch (Exception e) {
-            mass = "";
-        }
+        id = Integer.toString(this.id);
 
         if (this.location == null) {
-            lat = "";
-            lng = "";
+            String latEmpty = "";
+            String lngEmpty = "";
+
+            return String.format("%-20s %4s %4s %6s %10.5s %10.5s", this.name, id, year, mass, latEmpty, lngEmpty);
         } else {
-            lat = Double.toString(this.location.getLatitude());
-            lng = Double.toString(this.location.getLongitude());
+            lat = this.location.getLatitude();
+            lng = this.location.getLongitude();
         }
 
-        return String.format("%s %d %s %s %s %s", this.name, this.id, year, mass, lat, lng);
+        if (this.mass == 0) {
+            String massEmpty = "";
+
+            return String.format("%-20s %4s %4s %6s %10.5f %10.5f", this.name, id, year, massEmpty, lat, lng);
+        }
+
+        return String.format("%-20s %4s %4s %6d %10.5f %10.5f", this.name, id, year, mass, lat, lng);
     }
 }

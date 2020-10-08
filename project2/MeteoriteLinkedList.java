@@ -2,6 +2,8 @@ package project2;
 
 public class MeteoriteLinkedList {
     Node head;
+    Node current;
+    Node previous;
     Node tail;
 
     public MeteoriteLinkedList() {
@@ -9,9 +11,17 @@ public class MeteoriteLinkedList {
         tail = null;
     }
 
-    public MeteoriteLinkedList(MeteoriteList list) {
-        for (Meteorite meteorite : list) {
-            add(meteorite);
+    public MeteoriteLinkedList(MeteoriteList list) throws IllegalArgumentException {
+        if (list == null) {
+            throw new IllegalArgumentException("Invalid list.");
+        }
+
+        try {
+            for (Meteorite meteorite : list) {
+                add(meteorite);
+            }
+        } catch (IllegalArgumentException ex){
+            throw new IllegalArgumentException("Invalid list.");
         }
     }
 
@@ -21,6 +31,7 @@ public class MeteoriteLinkedList {
         } else {
             // Check if node already exists in LinkedList
             Node check = this.head;
+            Node n = new Node(m);
 
             while (check != null) {
                 if(check.data.equals(m)) {
@@ -30,24 +41,36 @@ public class MeteoriteLinkedList {
                 check = check.next;
             }
 
-            Node n = new Node(m);
             // Add at beginning
             if (this.head == null) {
                 n.next = head;
-                head = n;
+                this.head = n;
+                this.current = head;
 
                 return true;
-            } 
-            
+            }
+
             // Add at end
             else {
-                Node current = this.head;
+                if (n.compareTo(this.head) < 0) {
+                    n.next = this.head;
+                    this.head = n;
+                    this.current = this.head;
 
-                while(current.next != null) {
-                    current = current.next;
+                    return true;
                 }
 
-                current.next = n;
+                this.previous = this.head;
+                this.current = this.head;
+
+                while(this.current != null && n.compareTo(this.current) >= 0) {
+                    this.previous = this.current;
+                    this.current = this.current.next;
+                }
+
+                n.next = this.previous.next;
+                this.previous.next = n;
+                this.current = n;
 
                 return true;
             }
@@ -56,37 +79,31 @@ public class MeteoriteLinkedList {
 
     public Meteorite remove(String name, int id) {
         Meteorite toMatch = new Meteorite(name, id);
-        Meteorite removed = new Meteorite("removed", 1338);
+        Meteorite removed;
 
-        if(head.next == null) {
-            head = null;
-            tail = null;
-        }
-
-        if(head.data.equals(toMatch)) {
+        // Check if match is at head
+        if (head != null && head.data.equals(toMatch)) {
             removed = head.data;
             head = head.next;
 
-            if (head == null)
-                tail = null;
-
             return removed;
-        } else {
-            Node current = head;
-
-            while (current.next != null) {
-                if (current.data.equals(toMatch)) {
-                    removed = current.data;
-                    current.next = current.next.next;
-
-                    return removed;
-                }
-
-                current = current.next;
-            }
         }
 
-        return removed;
+        // Iterate through rest of LinkedList
+        else {
+            Node temp = head;
+            Node previous = null;
+
+            while (temp.next != null) {
+                if (temp.next.data.equals(toMatch)) {
+                    temp.next = temp.next.next;
+                } else {
+                    temp = temp.next;
+                }
+            }
+
+            return null;
+        }
     }
 
     @Override
@@ -100,9 +117,10 @@ public class MeteoriteLinkedList {
 
         while (current.next != null) {
             temp.append(current.toString());
-            temp.append(", \n");
-
             current = current.next;
+            if (current.next != null) {
+                temp.append("\n");
+            }
         }
 
         return temp.toString();

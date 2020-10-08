@@ -7,8 +7,8 @@ public class Location {
     private double lng;
 
     public Location(double latitude, double longitude) throws IllegalArgumentException {
-        if (latitude <= -90 || latitude >= 90 || longitude <= -180  || longitude >= 180) {
-            throw new IllegalArgumentException("Invalid parameters.");
+        if (latitude < -90 || latitude > 90 || longitude < -180  || longitude > 180) {
+            throw new IllegalArgumentException("Latitude must be [-90,90] inclusive and longitude must be [-180,180] inclusive");
         } else {
             this.lat = latitude;
             this.lng = longitude;
@@ -60,14 +60,10 @@ public class Location {
             return true; 
         }
         
-        if (!(o instanceof Location)) { 
+        if (o == null) {
             return false; 
-        } 
-
-        if (Math.abs(loc.lat - this.lat) < 0.00001 && Math.abs(loc.lng - this.lng) < 0.0001) {
-            return true;
-        } else {
-            return false;
         }
+
+        return Math.abs(loc.lat - this.lat) < 0.00001 && Math.abs(loc.lng - this.lng) < 0.0001;
     }
 }

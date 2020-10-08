@@ -1,5 +1,4 @@
 package project2;
-import project1_1.Color;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -112,13 +111,24 @@ public class FallenStars {
                         Location inputLoc = new Location(Double.parseDouble(inputStrings[1]), Double.parseDouble(inputStrings[2]));
                         Meteorite locationOutput = meteorites.getByLocation(inputLoc);
 
-                        System.out.println(locationOutput.toString());
-                        System.out.println();
+                        if (locationOutput == null) {
+                            System.out.println("Meteorite not found.");
+                            System.out.println("");
+                        } else {
+                            System.out.println(locationOutput.toString());
+                            System.out.println();
+                        }
                     } else if (command.matches("\\b(year)\\b.*")) {
                         String[] inputStrings = command.split(" ");
                         MeteoriteLinkedList yearOutput = meteorites.getByYear(Integer.parseInt(inputStrings[1]));
 
-                        System.out.println(yearOutput.toString());
+                        if (yearOutput == null) {
+                            System.out.println("Meteorite with matching year not found.");
+                            System.out.println();
+                        } else {
+                            System.out.println(yearOutput.toString());
+                            System.out.println();
+                        }
                     } else if (command.matches("\\b(mass)\\b.*")) {
                         String[] inputStrings = command.split(" ");
                         MeteoriteLinkedList massOutput = meteorites.getByMass(Integer.parseInt(inputStrings[1]), 10);
