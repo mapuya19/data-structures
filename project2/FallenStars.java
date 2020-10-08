@@ -105,22 +105,32 @@ public class FallenStars {
         do {
             System.out.println("Enter your search query:");
             command = userInput.nextLine();
+            try {
+                if (!command.equalsIgnoreCase("quit")) {
+                    if (command.matches("\\b(location)\\b.*")) {
+                        String[] inputStrings = command.split(" ");
+                        Location inputLoc = new Location(Double.parseDouble(inputStrings[1]), Double.parseDouble(inputStrings[2]));
+                        Meteorite locationOutput = meteorites.getByLocation(inputLoc);
 
-            if (!command.equalsIgnoreCase("quit")) {
-                if (command.matches("\\b(location)\\b.*")) {
-                    System.out.println("Location command!");
-                } else if (command.matches("\\b(year)\\b.*")) {
-                    String[] inputStrings = command.split(" ");
-                    MeteoriteLinkedList yearOutput = meteorites.getByYear(Integer.parseInt(inputStrings[1]));
+                        System.out.println(locationOutput.toString());
+                        System.out.println();
+                    } else if (command.matches("\\b(year)\\b.*")) {
+                        String[] inputStrings = command.split(" ");
+                        MeteoriteLinkedList yearOutput = meteorites.getByYear(Integer.parseInt(inputStrings[1]));
 
-                    System.out.println(yearOutput.toString());
-                } else if (command.matches("\\b(mass)\\b.*")) {
-                    System.out.println("Mass command!");
-                } else if (command.matches("\\b(quit)\\b.*")){
-                    System.exit(0);
-                } else {
-                    System.out.println("This is not valid query. Please try again.");
+                        System.out.println(yearOutput.toString());
+                    } else if (command.matches("\\b(mass)\\b.*")) {
+                        String[] inputStrings = command.split(" ");
+                        MeteoriteLinkedList massOutput = meteorites.getByMass(Integer.parseInt(inputStrings[1]), 10);
+
+                        System.out.println(massOutput.toString());
+                    } else if (command.matches("\\b(quit)\\b.*")){
+                        System.exit(0);
+                    }
                 }
+            } catch (Exception e) {
+                System.out.println("That is not a valid query. Please try again.");
+                System.out.println();
             }
 
         } while (!command.equalsIgnoreCase("quit"));

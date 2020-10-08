@@ -35,6 +35,8 @@ public class MeteoriteLinkedList {
             if (this.head == null) {
                 n.next = head;
                 head = n;
+
+                return true;
             } 
             
             // Add at end
@@ -46,9 +48,9 @@ public class MeteoriteLinkedList {
                 }
 
                 current.next = n;
-            }
 
-            return true;
+                return true;
+            }
         }
     }
 
