@@ -2,10 +2,21 @@ package project2;
 
 import java.lang.Math;
 
+/**
+ * This class represents a location that consists of a latitude and longitude.
+ * @author Matthew Apuya
+ * @version 10/08/2020
+ */
 public class Location {
     private final double lat;
     private final double lng;
 
+    /**
+     * Initializes location object.
+     * @param latitude Latitude of the location.
+     * @param longitude Longitude of the location.
+     * @throws IllegalArgumentException if latitude is not [-90,90] inclusive or if longitude is not [-180,180] inclusive.
+     */
     public Location(double latitude, double longitude) throws IllegalArgumentException {
         if (latitude < -90 || latitude > 90 || longitude < -180  || longitude > 180) {
             throw new IllegalArgumentException("Latitude must be [-90,90] inclusive and longitude must be [-180,180] inclusive");
@@ -15,6 +26,21 @@ public class Location {
         }
     }
 
+    public double getLatitude() {
+        return this.lat;
+    }
+
+    public double getLongitude() {
+        return this.lng;
+    }
+
+    /**
+     * Retrieve distance between two Location objects.
+     * @author Wikipedia
+     * @param loc Location to be compared to.
+     * @return double representing the distance between two Locations.
+     * @throws IllegalArgumentException if location is null.
+     */
     public double getDistance(Location loc) throws IllegalArgumentException {
         if (loc == null) {
             throw new IllegalArgumentException("Location value null.");
@@ -42,14 +68,12 @@ public class Location {
         }
     }
 
-    public double getLatitude() {
-        return this.lat;
-    }
-
-    public double getLongitude() {
-        return this.lng;
-    }
-
+    /**
+     * Checks if Location object is equal to another Location object based on the absolute value of the difference between
+     * the two.
+     * @param o Object to be compared to; typecast to Location
+     * @return true if object shares pointer or is within abs() bounds, false otherwise
+     */
     @Override
     public boolean equals(Object o) {
         Location loc = (Location) o;

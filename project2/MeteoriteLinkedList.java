@@ -1,5 +1,10 @@
 package project2;
 
+/**
+ * This class represents a list of Meteorites as a LinkedList.
+ * @author Matthew Apuya
+ * @version 10/08/2020
+ */
 public class MeteoriteLinkedList {
     Node head;
     Node current;
@@ -11,11 +16,18 @@ public class MeteoriteLinkedList {
         tail = null;
     }
 
+    /**
+     * Constructor that takes list as an argument.
+     * @param list A MeteoriteList that will have its elements put into the LinkedList
+     * @throws IllegalArgumentException if list passed in is null.
+     */
     public MeteoriteLinkedList(MeteoriteList list) throws IllegalArgumentException {
+        // Check if list is null
         if (list == null) {
             throw new IllegalArgumentException("Invalid list.");
         }
 
+        // Attempt to add all meteorites
         try {
             for (Meteorite meteorite : list) {
                 add(meteorite);
@@ -25,6 +37,11 @@ public class MeteoriteLinkedList {
         }
     }
 
+    /**
+     * Adds Meteorites within Nodes to LinkedList.
+     * @param m Meteorite to be added
+     * @return true if add successful, false if Meteorite already exists in list.
+     */
     public boolean add(Meteorite m) {
         if (m == null) {
             throw new IllegalArgumentException("Invalid parameter.");
@@ -50,6 +67,7 @@ public class MeteoriteLinkedList {
 
             // Add at end
             else {
+                // Ensure that head is not the one being added to
                 if (n.compareTo(this.head) < 0) {
                     n.next = this.head;
                     this.head = n;
@@ -61,6 +79,7 @@ public class MeteoriteLinkedList {
                 this.previous = this.head;
                 this.current = this.head;
 
+                // Iterate through LinkedList non-destructively.
                 while(this.current != null && n.compareTo(this.current) >= 0) {
                     this.previous = this.current;
                     this.current = this.current.next;
@@ -75,6 +94,12 @@ public class MeteoriteLinkedList {
         }
     }
 
+    /**
+     * Remove Node from LinkedList based on Meteorite name and id.
+     * @param name Name of the meteorite to be removed.
+     * @param id ID of meteorite to be removed.
+     * @return Meteorite that is being removed.
+     */
     public Meteorite remove(String name, int id) {
         Meteorite toMatch = new Meteorite(name, id);
 
@@ -109,27 +134,31 @@ public class MeteoriteLinkedList {
         }
     }
 
+    /**
+     * Converts MeteoriteLinkedList into formatted String.
+     * @return String that displays all elements of the LinkedList
+     */
     @Override
     public String toString() {
-        StringBuilder temp = new StringBuilder();
+        String output = "";
         Node current = head;
 
-        if (head != null && current.next == null) {
-            temp.append(current.toString());
-        }
+        while(current.next != null){
+            output += current.data;
 
-        while (current.next != null) {
-            temp.append(current.toString());
-            current = current.next;
-
-            if (current.next != null) {
-                temp.append("\n");
+            if (current.next != null){
+                output += "\n";
             }
+
+            current = current.next;
         }
 
-        return temp.toString();
+        return output;
     }
-    
+
+    /** Meteorite-specific implementation of a Node class for LinkedList.
+     * @author Joanna Klukowska
+     */
     private class Node implements Comparable<Node> {
         Meteorite data;
         Node next;

@@ -6,8 +6,14 @@ import java.io.File;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+/**
+ * This class is where the package is run from, parsing the CSV input and allowing for user interaction.
+ * @author Matthew Apuya
+ * @version 10/082020
+ */
 public class FallenStars {
     public static void main(String[] args) {
+        // Check that file is being passed in on runtime
         if (args.length == 0 ) {
             System.err.println("Usage Error: the program expects file name as an argument.\n");
             System.exit(1);
@@ -15,10 +21,13 @@ public class FallenStars {
 
         File csv = new File(args[0]);
 
+        // Make sure that file is at specified file path.
         if (!csv.exists()){
             System.err.println("Error: the file " + csv.getAbsolutePath()+ " does not exist.\n");
             System.exit(1);
         }
+
+        // Ensure that file is not corrupted or unreadable.
         if (!csv.canRead()){
             System.err.println("Error: the file " + csv.getAbsolutePath()+
                     " cannot be opened for reading.\n");
@@ -27,6 +36,7 @@ public class FallenStars {
 
         Scanner inCsv = null;
 
+        // Attempt parsing; if fails, exception thrown.
         try {
             inCsv = new Scanner(csv);
         } catch (FileNotFoundException e) {
@@ -75,9 +85,10 @@ public class FallenStars {
                 try {
                     Location tempLocation = new Location(Double.parseDouble(tempList.get(7)), Double.parseDouble(tempList.get(8)));
                     tempMeteorite.setLocation(tempLocation);
-                } catch (Exception e) {
+                } catch (IllegalArgumentException ex) {
                     //ignore this exception and skip to the next line
                 }
+
 
                 meteorites.add(tempMeteorite);
             } catch (IllegalArgumentException ex) {
@@ -104,44 +115,56 @@ public class FallenStars {
         do {
             System.out.println("Enter your search query:");
             command = userInput.nextLine();
-            try {
                 if (!command.equalsIgnoreCase("quit")) {
-                    if (command.matches("\\b(location)\\b.*")) {
-                        String[] inputStrings = command.split(" ");
-                        Location inputLoc = new Location(Double.parseDouble(inputStrings[1]), Double.parseDouble(inputStrings[2]));
-                        Meteorite locationOutput = meteorites.getByLocation(inputLoc);
+                    String[] inputStrings = command.split("\\s+");
 
-                        if (locationOutput == null) {
-                            System.out.println("Meteorite not found.");
-                        } else {
-                            System.out.println(locationOutput.toString());
+                    if (inputStrings[0].equals("year") && inputStrings.length == 2) {
+                        try {
+                            MeteoriteLinkedList yearOutput = meteorites.getByYear(Integer.parseInt(inputStrings[1]));
+
+                            if (yearOutput == null) {
+                                System.out.println("Meteorite with matching year not found.");
+                            } else {
+                                System.out.println(yearOutput.toString());
+                            }
+                            System.out.println();
+                        } catch (IllegalArgumentException ex) {
+                            System.err.println("That is not a valid query. Please try again.");
+                            System.out.println();
                         }
-                        System.out.println();
-                    } else if (command.matches("\\b(year)\\b.*")) {
-                        String[] inputStrings = command.split(" ");
-                        MeteoriteLinkedList yearOutput = meteorites.getByYear(Integer.parseInt(inputStrings[1]));
+                    } else if (inputStrings[0].equals("location") && inputStrings.length == 3) {
+                            Location inputLoc = new Location(Double.parseDouble(inputStrings[1]), Double.parseDouble(inputStrings[2]));
+                            Meteorite locationOutput = meteorites.getByLocation(inputLoc);
 
-                        if (yearOutput == null) {
-                            System.out.println("Meteorite with matching year not found.");
-                        } else {
-                            System.out.println(yearOutput.toString());
+                            if (locationOutput == null) {
+                                System.out.println("Meteorite not found.");
+                            } else {
+                                System.out.println(locationOutput.toString());
+                            }
+                            System.out.println();
+                    } else if (inputStrings[0].equals("mass") && inputStrings.length == 2) {
+                        try {
+                            MeteoriteLinkedList massOutput = meteorites.getByMass(Integer.parseInt(inputStrings[1]), 10);
+
+                            if (massOutput == null) {
+                                System.out.println("Meteorite with matching mass not found.");
+                            } else {
+                                System.out.println(massOutput.toString());
+                            }
+                            System.out.println();
+                        } catch (IllegalArgumentException ex) {
+                            System.err.println("That is not a valid query. Please try again.");
+                            System.out.println();
                         }
-                        System.out.println();
-                    } else if (command.matches("\\b(mass)\\b.*")) {
-                        String[] inputStrings = command.split(" ");
-                        MeteoriteLinkedList massOutput = meteorites.getByMass(Integer.parseInt(inputStrings[1]), 10);
-
-                        System.out.println(massOutput.toString());
-                    } else if (command.matches("\\b(quit)\\b.*")){
+                    } else if (inputStrings[0].equals("quit")) {
                         System.exit(0);
+                    } else {
+                        System.err.println("That is not a valid query. Please try again.");
+                        System.out.println();
                     }
                 }
-            } catch (Exception e) {
-                System.out.println("That is not a valid query. Please try again.");
-                System.out.println();
-            }
-
-        } while (!command.equalsIgnoreCase("quit"));
+        }
+                while (!command.equalsIgnoreCase("quit"));
     }
 
     /**
