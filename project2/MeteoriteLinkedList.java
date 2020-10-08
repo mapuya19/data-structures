@@ -67,7 +67,7 @@ public class MeteoriteLinkedList {
 
             // Add at end
             else {
-                // Ensure that head is not the one being added to
+                // If given node is ahead of head, insert new node ahead of head
                 if (n.compareTo(this.head) < 0) {
                     n.next = this.head;
                     this.head = n;
@@ -79,7 +79,7 @@ public class MeteoriteLinkedList {
                 this.previous = this.head;
                 this.current = this.head;
 
-                // Iterate through LinkedList non-destructively.
+                // Iterate through LinkedList non-destructively, ensuring that the nodes remained sorted at all times
                 while(this.current != null && n.compareTo(this.current) >= 0) {
                     this.previous = this.current;
                     this.current = this.current.next;
@@ -143,13 +143,13 @@ public class MeteoriteLinkedList {
         String output = "";
         Node current = head;
 
-        while(current.next != null){
-            output = output + current.data + "\n";
+        while(current != null){
+            output = output + current.data.toString() + "\n";
 
             current = current.next;
         }
 
-        return output;
+        return output.trim();
     }
 
     /** Meteorite-specific implementation of a Node class for LinkedList.

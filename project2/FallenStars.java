@@ -7,7 +7,9 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 /**
- * This class is where the package is run from, parsing the CSV input and allowing for user interaction.
+ * This class is where the package is run from, parsing a CSV file input and allowing for user interaction. The user
+ * is able to: find the nearest Meteorite object given a pair Lat / Lng coordinates; find all Meteorites that
+ * share a given mass within a 10 grams; as well as find all Meteorites observed within a given year.
  * @author Matthew Apuya
  * @version 10/082020
  */
@@ -53,6 +55,8 @@ public class FallenStars {
         // Skip First Line
         inCsv.nextLine();
 
+
+        // Iterate through all csv entries
         while (inCsv.hasNextLine()) {
             try {
                 line = inCsv.nextLine();
@@ -63,7 +67,7 @@ public class FallenStars {
                 continue;
             }
 
-
+            // Attempt to set each data field for Meteorite; field is left blank is value is invalid
             try {
                 String tempName = tempList.get(0);
                 int tempId = Integer.parseInt(tempList.get(1));
@@ -98,8 +102,10 @@ public class FallenStars {
             }
         }
 
+        // Close file scanner
         inCsv.close();
 
+        // Begin user interface
         System.out.print(
                 "Search the database by using one of the following queries.\n" +
                 "\t  To search for meteorite nearest to a given geo-location, enter\n" +
@@ -111,15 +117,21 @@ public class FallenStars {
                 "\t  To finish the program, enter\n" +
                 "\t        quit\n");
 
+        // Create scanner for user input
         Scanner userInput = new Scanner(System.in);
         String command;
 
+        // Run until user enters "quit"
         do {
             System.out.println("Enter your search query:");
             command = userInput.nextLine();
+
+                // Check that "quit" is not called
                 if (!command.equalsIgnoreCase("quit")) {
+                    //Split userInput into Array using whitespace as the separation point
                     String[] inputStrings = command.split("\\s+");
 
+                    // If user selects "year" and has valid parameters, String listing all Meteorites is printed
                     if (inputStrings[0].equals("year") && inputStrings.length == 2) {
                         try {
                             MeteoriteLinkedList yearOutput = meteorites.getByYear(Integer.parseInt(inputStrings[1]));
@@ -134,7 +146,10 @@ public class FallenStars {
                             System.err.println("That is not a valid query. Please try again.");
                             System.out.println();
                         }
-                    } else if (inputStrings[0].equals("location") && inputStrings.length == 3) {
+                    }
+
+                    // If user selects "location" and has valid parameters, nearest meteorite is printed
+                    else if (inputStrings[0].equals("location") && inputStrings.length == 3) {
                             Location inputLoc = new Location(Double.parseDouble(inputStrings[1]), Double.parseDouble(inputStrings[2]));
                             Meteorite locationOutput = meteorites.getByLocation(inputLoc);
 
@@ -144,7 +159,10 @@ public class FallenStars {
                                 System.out.println(locationOutput.toString());
                             }
                             System.out.println();
-                    } else if (inputStrings[0].equals("mass") && inputStrings.length == 2) {
+                    }
+
+                    // If user selects "mass" and has valid parameters, String listing all Meteorites with matching mass within 10 grams is printed
+                    else if (inputStrings[0].equals("mass") && inputStrings.length == 2) {
                         try {
                             MeteoriteLinkedList massOutput = meteorites.getByMass(Integer.parseInt(inputStrings[1]), 10);
 
@@ -158,9 +176,15 @@ public class FallenStars {
                             System.err.println("That is not a valid query. Please try again.");
                             System.out.println();
                         }
-                    } else if (inputStrings[0].equals("quit")) {
+                    }
+
+                    // If user selects "quit", end the program
+                    else if (inputStrings[0].equals("quit")) {
                         System.exit(0);
-                    } else {
+                    }
+
+                    // Any other user input displays this message and loop continues
+                    else {
                         System.err.println("That is not a valid query. Please try again.");
                         System.out.println();
                     }
