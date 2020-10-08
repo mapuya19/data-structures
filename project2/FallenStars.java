@@ -36,7 +36,7 @@ public class FallenStars {
         }
 
         MeteoriteList meteorites = new MeteoriteList();
-        ArrayList<String> tempList = new ArrayList<String>();
+        ArrayList<String> tempList;
 
         String line = null;
 
@@ -113,22 +113,20 @@ public class FallenStars {
 
                         if (locationOutput == null) {
                             System.out.println("Meteorite not found.");
-                            System.out.println("");
                         } else {
                             System.out.println(locationOutput.toString());
-                            System.out.println();
                         }
+                        System.out.println();
                     } else if (command.matches("\\b(year)\\b.*")) {
                         String[] inputStrings = command.split(" ");
                         MeteoriteLinkedList yearOutput = meteorites.getByYear(Integer.parseInt(inputStrings[1]));
 
                         if (yearOutput == null) {
                             System.out.println("Meteorite with matching year not found.");
-                            System.out.println();
                         } else {
                             System.out.println(yearOutput.toString());
-                            System.out.println();
                         }
+                        System.out.println();
                     } else if (command.matches("\\b(mass)\\b.*")) {
                         String[] inputStrings = command.split(" ");
                         MeteoriteLinkedList massOutput = meteorites.getByMass(Integer.parseInt(inputStrings[1]), 10);

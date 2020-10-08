@@ -43,11 +43,9 @@ public class MeteoriteLinkedList {
 
             // Add at beginning
             if (this.head == null) {
-                n.next = head;
+                n.next = null;
                 this.head = n;
                 this.current = head;
-
-                return true;
             }
 
             // Add at end
@@ -72,18 +70,21 @@ public class MeteoriteLinkedList {
                 this.previous.next = n;
                 this.current = n;
 
-                return true;
             }
+            return true;
         }
     }
 
     public Meteorite remove(String name, int id) {
         Meteorite toMatch = new Meteorite(name, id);
-        Meteorite removed;
+
+        if (head == null) {
+            return null;
+        }
 
         // Check if match is at head
-        if (head != null && head.data.equals(toMatch)) {
-            removed = head.data;
+        if (head.data.equals(toMatch)) {
+            Meteorite removed = head.data;
             head = head.next;
 
             return removed;
@@ -92,11 +93,13 @@ public class MeteoriteLinkedList {
         // Iterate through rest of LinkedList
         else {
             Node temp = head;
-            Node previous = null;
 
             while (temp.next != null) {
                 if (temp.next.data.equals(toMatch)) {
+                    Meteorite removed = temp.next.data;
                     temp.next = temp.next.next;
+
+                    return removed;
                 } else {
                     temp = temp.next;
                 }
@@ -118,6 +121,7 @@ public class MeteoriteLinkedList {
         while (current.next != null) {
             temp.append(current.toString());
             current = current.next;
+
             if (current.next != null) {
                 temp.append("\n");
             }

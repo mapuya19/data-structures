@@ -3,8 +3,8 @@ package project2;
 import java.lang.Math;
 
 public class Location {
-    private double lat;
-    private double lng;
+    private final double lat;
+    private final double lng;
 
     public Location(double latitude, double longitude) throws IllegalArgumentException {
         if (latitude < -90 || latitude > 90 || longitude < -180  || longitude > 180) {
@@ -20,12 +20,10 @@ public class Location {
             throw new IllegalArgumentException("Location value null.");
         } else {
             double lat1 = this.lat;
-            double lng1 = this.lng;
             double lat2 = loc.lat;
-            double lng2 = loc.lng;
 
             double dLat = Math.toRadians(lat2 - lat1);
-            double dLon = Math.toRadians(lng2 - lng1);
+            double dLon = Math.toRadians(loc.lng - this.lng);
 
             // convert to radians
             lat1 = Math.toRadians(lat1);

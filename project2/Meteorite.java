@@ -1,8 +1,8 @@
 package project2;
 
 public class Meteorite implements Comparable<Meteorite> {
-    private String name;
-    private int id;
+    private final String name;
+    private final int id;
     private int mass;
     private int year;
     private Location location;
@@ -48,10 +48,6 @@ public class Meteorite implements Comparable<Meteorite> {
         return this.location;
     }
 
-    public String getName() {
-        return this.name;
-    }
-
     @Override
     public int compareTo(Meteorite o) {
         if (o.name.equalsIgnoreCase(this.name) && (o.id == this.id)) {
@@ -79,22 +75,15 @@ public class Meteorite implements Comparable<Meteorite> {
     public boolean equals(Object o) {
         Meteorite meteorite = (Meteorite) o;
 
-        String name1 = meteorite.name;
-        String name2 = this.name;
-
         if (o == this) {
             return true; 
         }
 
-        if (!(o instanceof Meteorite)) {
+        if (o == null) {
             return false;
         }
 
-        if (name1.equalsIgnoreCase(name2) && meteorite.id == this.id) {
-            return true;
-        } else {
-            return false;
-        }
+        return meteorite.name.equalsIgnoreCase(this.name) && meteorite.id == this.id;
     }
 
     @Override
