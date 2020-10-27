@@ -1,6 +1,5 @@
 package project3;
 import java.util.NoSuchElementException;
-import java.util.Iterator;
 
 public class MyList<E> implements List<E> {
     Node<E> head;
@@ -103,7 +102,7 @@ public class MyList<E> implements List<E> {
 
         // Remove at tail
         else if (current.next == null) {
-            current.previous.next = null;;
+            current.previous.next = null;
             tail = current.previous;
         }
 
@@ -235,7 +234,7 @@ public class MyList<E> implements List<E> {
 
     /**
      * Determines if this list is equal to `obj`.
-     * @obj an Object that is compared to this list for equality
+     * @param obj an Object that is compared to this list for equality
      * @return true if this list is equal to `obj` (same elements in the same order)
      *         false, otherwise
      */

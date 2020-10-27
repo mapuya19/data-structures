@@ -2,6 +2,10 @@ package project3;
 
 public class Test {
     public static void main(String[] args) {
+        testStack();
+    }
+
+    public static void testList() {
         MyList<Double> testList = new MyList<>();
 
         testList.add(4.9, 0);
@@ -23,5 +27,17 @@ public class Test {
 
         testList.remove(2.3);
         System.out.println("testList: " + testList);
+    }
+
+    public static void testStack() {
+        MyStack<String> testStack = new MyStack<>();
+
+        testStack.push("Hello");
+        testStack.push("Mom");
+        testStack.push("Taste");
+        System.out.println(testStack);
+
+        System.out.println(testStack.pop());
+        System.out.println(testStack.top());
     }
 }
