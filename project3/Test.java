@@ -2,7 +2,7 @@ package project3;
 
 public class Test {
     public static void main(String[] args) {
-        testQueue();
+        testList();
     }
 
     public static void testList() {
@@ -23,7 +23,7 @@ public class Test {
 
         System.out.println("testList: " + testList);
 
-        testList.remove(1);
+        testList.remove(5.1);
         System.out.println("testList: " + testList);
 
         testList.remove(0);

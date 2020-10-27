@@ -89,15 +89,20 @@ public class MyList<E> implements List<E> {
             current = current.next;
         }
 
+        // Remove when last element
+        if (head.data == current.data && size == 1) {
+            head = null;
+            tail = null;
+
+            size--;
+            return current.data;
+        }
+
         // Remove at head
         if (head.data == current.data) {
             head = current.next;
-
-            if (head.previous != null)
-                head.previous = current.next;
-
-            if (head.next != null)
-                head.next.previous = current.next;
+            head.previous = null;
+            head.next.previous = current.next;
         }
 
         // Remove at tail
@@ -144,6 +149,7 @@ public class MyList<E> implements List<E> {
                 if (removeThis.next != null)
                     removeThis.next.previous = removeThis.previous;
 
+                // Assign tail to previous Node
                 if (removeThis.next == null)
                     tail = removeThis.previous;
 
@@ -247,8 +253,7 @@ public class MyList<E> implements List<E> {
 
         Node<E> a = this.head;
         Node<E> b = o.head;
-        while (a != null && b != null)
-        {
+        while (a != null && b != null) {
             if (!a.data.equals(b.data))
                 return false;
 

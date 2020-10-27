@@ -68,8 +68,7 @@ public class MyStack<E> implements Stack<E> {
 
         Node<E> a = this.top;
         Node<E> b = o.top;
-        while (a != null && b != null)
-        {
+        while (a != null && b != null) {
             if (!a.data.equals(b.data))
                 return false;
 
