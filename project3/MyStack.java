@@ -1,5 +1,4 @@
 package project3;
-import java.util.NoSuchElementException;
 
 public class MyStack<E> implements Stack<E> {
     Node<E> top;
@@ -56,13 +55,25 @@ public class MyStack<E> implements Stack<E> {
 
     /**
      * Determines if this stack is equal to `obj`.
-     * @obj an Object that is compared to this stack for equality
+     * @param obj an Object that is compared to this stack for equality
      * @return true if this stack is equal to `obj` (same elements in the same order)
      *         false, otherwise
      */
-    public boolean equals(Object item) {
+    public boolean equals(Object obj) {
+        MyStack<E> o = (MyStack<E>) obj;
 
-        return false;
+        Node<E> a = this.top;
+        Node<E> b = o.top;
+        while (a != null && b != null)
+        {
+            if (!a.data.equals(b.data))
+                return false;
+
+            a = a.next;
+            b = b.next;
+        }
+
+        return (a == null && b == null);
     }
 
     /**

@@ -239,8 +239,20 @@ public class MyList<E> implements List<E> {
      *         false, otherwise
      */
     public boolean equals(Object obj) {
+        MyList<E> o = (MyList<E>) obj;
 
-        return false;
+        Node<E> a = this.head;
+        Node<E> b = o.head;
+        while (a != null && b != null)
+        {
+            if (!a.data.equals(b.data))
+                return false;
+
+            a = a.next;
+            b = b.next;
+        }
+
+        return (a == null && b == null);
     }
 
     /**
