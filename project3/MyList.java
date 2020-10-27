@@ -64,7 +64,6 @@ public class MyList<E> implements List<E> {
         return true;
     }
 
-    // NEED TO FIX!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     /**
      * Removes and returns an element at position `pos`, shifts elements starting
      * at `pos+1` by one to the left (lower position values)
