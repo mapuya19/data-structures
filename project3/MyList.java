@@ -239,6 +239,10 @@ public class MyList<E> implements List<E> {
      *         false, otherwise
      */
     public boolean equals(Object obj) {
+        if (!(obj instanceof MyList)) {
+            return false;
+        }
+
         MyList<E> o = (MyList<E>) obj;
 
         Node<E> a = this.head;

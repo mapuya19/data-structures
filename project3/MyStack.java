@@ -60,6 +60,10 @@ public class MyStack<E> implements Stack<E> {
      *         false, otherwise
      */
     public boolean equals(Object obj) {
+        if (!(obj instanceof MyStack)) {
+            return false;
+        }
+
         MyStack<E> o = (MyStack<E>) obj;
 
         Node<E> a = this.top;
