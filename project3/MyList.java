@@ -266,11 +266,9 @@ public class MyList<E> implements List<E> {
         Node<E> a = this.head;
         Node<E> b = o.head;
 
-        // Check if one list is empty and the other isn't
-        if (this.size == 0 || o.size == 0) {
-            if (this.size != o.size) {
-                return false;
-            }
+        // Check if size not same
+        if (this.size != o.size) {
+            return false;
         }
 
         // Compare and iterate both LinkedLists

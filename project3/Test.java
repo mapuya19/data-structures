@@ -3,7 +3,7 @@ package project3;
 public class Test {
     public static void main(String[] args) {
 //        testList();
-        testStack();
+//        testStack();
 //        testQueue();
     }
 
@@ -31,19 +31,9 @@ public class Test {
         testStack.pop();
         System.out.println(testStack);
 
-
-        for (int i = 0; i < 10; i++) {
-            testStack2.push("Hello" + i);
-        }
-        testStack2.pop();
-        System.out.println(testStack2);
-
-        testStack.push(testStack2.pop());
-        System.out.println(testStack);
+        System.out.println("testStack2: " + testStack2);
 
         System.out.println(testStack.equals(testStack2));
-
-
     }
 
     public static void testQueue() {

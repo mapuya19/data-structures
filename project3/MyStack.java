@@ -90,11 +90,9 @@ public class MyStack<E> implements Stack<E> {
         Node<E> a = this.top;
         Node<E> b = o.top;
 
-        // Check if one list is empty and the other isn't
-        if (this.size == 0 || o.size == 0) {
-            if (this.size != o.size) {
-                return false;
-            }
+        // Check if size not same
+        if (this.size != o.size) {
+            return false;
         }
 
         // Compare and iterate both Stacks
