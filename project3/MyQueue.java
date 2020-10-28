@@ -108,7 +108,7 @@ public class MyQueue<E> implements Queue<E>{
 
         else {
             // Reset front tracker if front was at end of array
-            if (front == size) {
+            if (front == size + 1) {
                 front = 0;
             }
 

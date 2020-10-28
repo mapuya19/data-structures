@@ -3,8 +3,8 @@ package project3;
 public class Test {
     public static void main(String[] args) {
 //        testList();
-//        testStack();
-        testQueue();
+        testStack();
+//        testQueue();
     }
 
     public static void testList() {
@@ -95,13 +95,13 @@ public class Test {
     }
 
     public static void testStack() {
-//        MyStack<String> testStack = new MyStack<>();
-//        MyStack<String> testStack2 = new MyStack<>();
-//
-//        testStack.push("Hello");
-//        testStack.pop();
-//
-//        System.out.println(testStack);
+        MyStack<String> testStack = new MyStack<>();
+        MyStack<String> testStack2 = new MyStack<>();
+
+        testStack.push("Hello");
+        testStack.pop();
+
+        System.out.println(testStack);
 
 //        MyStack<Integer> intStack = new MyStack<>();
 //        intStack.push(4);
