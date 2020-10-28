@@ -60,6 +60,7 @@ public class MyStack<E> implements Stack<E> {
      *         false, otherwise
      */
     public boolean equals(Object obj) {
+        // Check if Object is Stack
         if (!(obj instanceof MyStack)) {
             return false;
         }
@@ -68,6 +69,8 @@ public class MyStack<E> implements Stack<E> {
 
         Node<E> a = this.top;
         Node<E> b = o.top;
+
+        // Compare and iterate both Stacks
         while (a != null && b != null) {
             if (!a.data.equals(b.data))
                 return false;
@@ -76,7 +79,7 @@ public class MyStack<E> implements Stack<E> {
             b = b.next;
         }
 
-        return (a == null && b == null);
+        return true;
     }
 
     /**
@@ -90,13 +93,16 @@ public class MyStack<E> implements Stack<E> {
         StringBuilder listString = new StringBuilder();
         Node<E> current = top;
 
+        // Iterate through LinkedList until null
         while (current != null) {
             listString.append(current.data);
 
+            // Add comma only if next element exists
             if (current.next != null) {
                 listString.append(", ");
             }
 
+            // End iteration
             if (current.next == null) {
                 break;
             }

@@ -8,6 +8,14 @@ public class MyQueue<E> implements Queue<E>{
     int front;
     int back;
 
+    public MyQueue() {
+        storage = (E[]) new Object[capacity];
+        this.capacity = 5;
+        this.size = 0;
+        front = -1;
+        back = -1;
+    }
+
     public MyQueue(int capacity) {
         storage = (E[]) new Object[capacity];
         this.capacity = capacity;
@@ -28,19 +36,28 @@ public class MyQueue<E> implements Queue<E>{
         }
 
         // Check if queue is full and grow if necessary
-        if (size == (capacity - 1)) {
+        if (size == storage.length - 1 && size == capacity) {
             E[] newStorage = (E[]) new Object[storage.length * 2];
 
-            for (int i = 0; i < newStorage.length; i++) {
-                newStorage[i] = storage[front];
-                front = (front + 1) % storage.length;
+            if (front <= back) {
+                System.arraycopy(storage, front, newStorage, front, capacity);
             }
 
-            storage[back] = item;
-            size++;
-            front = 0;
-            back = size;
+            else {
+                int n1 = storage.length - front;
+                int n2 = back + 1;
+
+                System.arraycopy(storage, front, newStorage, 0, n1);
+                System.arraycopy(storage, 0, newStorage, n1, n2);
+
+                front = 0;
+                back = capacity - 1;
+            }
+
             storage = newStorage;
+            capacity = storage.length;
+            storage[++back] = item;
+            size++;
         }
 
         // Standard enqueue to back
@@ -64,12 +81,22 @@ public class MyQueue<E> implements Queue<E>{
             System.err.println("Cannot dequeue from empty list");
         }
 
-        E removeThis = storage[front];
+        E removeThis;
+        removeThis = storage[front];
         storage[front] = null;
 
-        front = (front + 1) % storage.length;
-        size--;
+        if (front == back) {
+            front = -1;
+            back = -1;
+        } else {
+            if (front == size - 1) {
+                front = 0;
+            } else {
+                front = front + 1;
+            }
+        }
 
+        size--;
         return removeThis;
     }
 
@@ -109,19 +136,28 @@ public class MyQueue<E> implements Queue<E>{
     /**
      * Returns a string representation of this queue. The string is constructed by
      * concatenating all elements of this queue separated by a comma and a single space.
-     * The front of the qyeye should be the leftmost element and the bacj of the queue
+     * The front of the queue should be the leftmost element and the back of the queue
      * should be the rightmost element. There should be no comma after the last element.
      * @return a string representation of this queue.
      */
     public String toString () {
         StringBuilder storageString = new StringBuilder();
+        int counter = front;
 
-        for (int i = 0; i < size; i++) {
-            storageString.append(storage[i]);
-
-            if (storage[i + 1] != null) {
-                storageString.append(", ");
+        while (counter != back + 1) {
+            if (counter == storage.length) {
+                counter = 0;
             }
+
+            if (storage[counter] != null) {
+                storageString.append(storage[counter]);
+
+                if (storage[counter + 1] != null) {
+                    storageString.append(", ");
+                }
+            }
+
+            counter++;
         }
 
         return storageString.toString();

@@ -172,6 +172,7 @@ public class MyList<E> implements List<E> {
      * @return position of `item` in this list or -1 if `item` is not found in this list
      */
     public int find(E item) {
+        // Check if head is null
         if (head == null) {
             return -1;
         }
@@ -179,6 +180,7 @@ public class MyList<E> implements List<E> {
         Node<E> current = head;
         int counter = 0;
 
+        // Iterate through LinkedList until matching item is found
         while (current != null) {
             if (current.data.equals(item)) {
                 return counter;
@@ -198,10 +200,12 @@ public class MyList<E> implements List<E> {
      * throws NoSuchElementException if pos < 0 or pos >= size
      */
     public E get(int pos) throws NoSuchElementException {
+        // Check if head is null
         if (head == null) {
             return null;
         }
 
+        // Check if pos is valid
         if (pos < 0 || pos >= this.size) {
             throw new NoSuchElementException("Invalid position.");
         }
@@ -209,6 +213,7 @@ public class MyList<E> implements List<E> {
         Node<E> current = head;
         int counter = 0;
 
+        // Iterate through LinkedList until given pos
         while (current != null) {
             if (counter == pos) {
                 return current.data;
@@ -244,6 +249,7 @@ public class MyList<E> implements List<E> {
      *         false, otherwise
      */
     public boolean equals(Object obj) {
+        // Check if Object is LinkedList
         if (!(obj instanceof MyList)) {
             return false;
         }
@@ -252,6 +258,8 @@ public class MyList<E> implements List<E> {
 
         Node<E> a = this.head;
         Node<E> b = o.head;
+
+        // Compare and iterate both LinkedLists
         while (a != null && b != null) {
             if (!a.data.equals(b.data))
                 return false;
@@ -260,7 +268,7 @@ public class MyList<E> implements List<E> {
             b = b.next;
         }
 
-        return (a == null && b == null);
+        return true;
     }
 
     /**
@@ -273,13 +281,16 @@ public class MyList<E> implements List<E> {
         StringBuilder listString = new StringBuilder();
         Node<E> current = head;
 
+        // Iterate through LinkedList until null
         while (current != null) {
             listString.append(current.data);
 
+            // Add comma only if next element exists
             if (current.next != null) {
                 listString.append(", ");
             }
 
+            // End iteration
             if (current.next == null) {
                 break;
             }

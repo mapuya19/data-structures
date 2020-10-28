@@ -2,7 +2,7 @@ package project3;
 
 public class Test {
     public static void main(String[] args) {
-        testList();
+        testQueue();
     }
 
     public static void testList() {
@@ -68,6 +68,21 @@ public class Test {
         testQueue.enqueue(5);
         System.out.println("testQueue: " + testQueue.toString());
 
+        testQueue.dequeue();
+        testQueue.dequeue();
+        System.out.println("testQueue: " + testQueue.toString());
 
+        testQueue.enqueue(6);
+        System.out.println("testQueue: " + testQueue.toString());
+
+        testQueue.enqueue(8);
+        System.out.println("testQueue: " + testQueue.toString());
+
+        testQueue.enqueue(9);
+        System.out.println("testQueue: " + testQueue.toString());
+
+//        testQueue.enqueue(7);
+//        testQueue.enqueue(8);
+//        testQueue.enqueue(5);
     }
 }
