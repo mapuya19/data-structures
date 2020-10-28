@@ -37,6 +37,7 @@ public class MyQueue<E> implements Queue<E>{
             throw new IllegalArgumentException("Item must not be null");
         }
 
+        // Check if Queue is empty
         if (size == 0) {
             storage[0] = item;
             front = 0;
@@ -126,11 +127,8 @@ public class MyQueue<E> implements Queue<E>{
      * @return  the element from the top of this queue or null if this queue is empty
      */
     public E peek() {
-        if (size == 0) {
-            return null;
-        }
-
-        if (front == -1) {
+        // Check if queue is empty
+        if (size == 0 || front == -1) {
             return null;
         }
 
@@ -162,7 +160,10 @@ public class MyQueue<E> implements Queue<E>{
         int back1 = this.back;
         int back2 = o.back;
 
+        // Iterate through both lists and check each element
         while (front1 < this.size && front2 < o.size) {
+
+            // Reset front trackers if capacity index is reached
             if (front1 == this.capacity) {
                 front1 = 0;
             }
@@ -171,10 +172,12 @@ public class MyQueue<E> implements Queue<E>{
                 front2 = 0;
             }
 
+            // Look for equal elements
             if (!storage[front1].equals(o.storage[front2])) {
                 return false;
             }
 
+            // If back is reached, exit loop
             if (front1 == back1 || front2 == back2) {
                 break;
             }
@@ -194,6 +197,7 @@ public class MyQueue<E> implements Queue<E>{
      * @return a string representation of this queue.
      */
     public String toString () {
+        // Check if Queue is empty
         if (size == 0) {
             return "";
         }
@@ -201,14 +205,18 @@ public class MyQueue<E> implements Queue<E>{
         StringBuilder storageString = new StringBuilder();
         int counter = front;
 
+        // Iterate through queue until reaching the end
         while (counter != back + 1) {
+            // If counter reaches capacity before back, point counter to front
             if (counter == storage.length) {
                 counter = 0;
             }
 
+            // Skip null elements
             if (storage[counter] != null) {
                 storageString.append(storage[counter]);
 
+                // Add comma if next element exists
                 if (counter != back) {
                     storageString.append(", ");
                 }

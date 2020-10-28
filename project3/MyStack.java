@@ -44,10 +44,12 @@ public class MyStack<E> implements Stack<E> {
      * @return the element from the top of this stack or null if this stack is empty
      */
     public E pop() {
+        // Check if Stack is empty
         if (top == null) {
             return null;
         }
 
+        // Update bottom pointer if only one element left
         if (top == bottom) {
             bottom = null;
         }
@@ -63,6 +65,7 @@ public class MyStack<E> implements Stack<E> {
      * @return the element from the top of this stack or null if this stack is empty
      */
     public E top() {
+        // Check if Stack is empty
         if (top == null) {
             return null;
         }
