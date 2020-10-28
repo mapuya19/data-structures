@@ -15,7 +15,7 @@ public class MyList<E> implements List<E> {
      * Adds an element 'item' at position `pos`, shifts elements starting at `pos` by
      * one position to the right (higher position values)
      * @param item the element to be added to this list
-     * @param pos postion at which `item` should be added
+     * @param pos position at which `item` should be added
      * @throws NoSuchElementException if `pos` < 0 or `pos` > size
      * @throws IllegalArgumentException if `item == null`
      */
@@ -134,12 +134,11 @@ public class MyList<E> implements List<E> {
      * @return the removed element, or null if element equal to `item` is not in this list
      */
     public E remove(E item) {
-        Node<E> removeThis = new Node<>(item);
-
         // Check if LinkedList is empty
         if (head == null)
             return null;
 
+        Node<E> removeThis;
         Node<E> current = head;
 
         // Iterate through LinkedList and find matching element
@@ -267,6 +266,13 @@ public class MyList<E> implements List<E> {
         Node<E> a = this.head;
         Node<E> b = o.head;
 
+        // Check if one list is empty and the other isn't
+        if (this.size == 0 || o.size == 0) {
+            if (this.size != o.size) {
+                return false;
+            }
+        }
+
         // Compare and iterate both LinkedLists
         while (a != null && b != null) {
             if (!a.data.equals(b.data))
@@ -306,7 +312,7 @@ public class MyList<E> implements List<E> {
             current = current.next;
         }
 
-        return listString.toString();
+        return listString.toString().trim();
     }
 
     private static class Node<E> {

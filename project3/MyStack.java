@@ -3,10 +3,12 @@ package project3;
 public class MyStack<E> implements Stack<E> {
     Node<E> top;
     Node<E> bottom;
+    int size;
 
     public MyStack() {
         top = null;
         bottom = null;
+        size = 0;
     }
 
     /**
@@ -33,6 +35,8 @@ public class MyStack<E> implements Stack<E> {
             n.next = top;
             top = n;
         }
+
+        size++;
     }
 
     /**
@@ -44,9 +48,14 @@ public class MyStack<E> implements Stack<E> {
             return null;
         }
 
+        if (top == bottom) {
+            bottom = null;
+        }
+
         Node<E> popped = top;
         top = top.next;
 
+        size--;
         return popped.data;
     }
 
@@ -78,6 +87,13 @@ public class MyStack<E> implements Stack<E> {
         Node<E> a = this.top;
         Node<E> b = o.top;
 
+        // Check if one list is empty and the other isn't
+        if (this.size == 0 || o.size == 0) {
+            if (this.size != o.size) {
+                return false;
+            }
+        }
+
         // Compare and iterate both Stacks
         while (a != null && b != null) {
             if (!a.data.equals(b.data))
@@ -103,11 +119,11 @@ public class MyStack<E> implements Stack<E> {
 
         // Iterate through LinkedList until null
         while (current != null) {
-            listString.append(current.data);
+            listString.insert(0, current.data);
 
             // Add comma only if next element exists
             if (current.next != null) {
-                listString.append(", ");
+                listString.insert(0, ", ");
             }
 
             // End iteration
@@ -118,7 +134,7 @@ public class MyStack<E> implements Stack<E> {
             current = current.next;
         }
 
-        return listString.toString();
+        return listString.toString().trim();
     }
 
     private static class Node<E> {

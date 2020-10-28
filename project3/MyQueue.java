@@ -108,7 +108,7 @@ public class MyQueue<E> implements Queue<E>{
 
         else {
             // Reset front tracker if front was at end of array
-            if (front == size + 1) {
+            if (front == capacity) {
                 front = 0;
             }
 
@@ -127,6 +127,10 @@ public class MyQueue<E> implements Queue<E>{
      */
     public E peek() {
         if (size == 0) {
+            return null;
+        }
+
+        if (front == -1) {
             return null;
         }
 
@@ -152,11 +156,31 @@ public class MyQueue<E> implements Queue<E>{
             return false;
         }
 
-        // Check each individual index
-        for (int i = 0; i < this.size; i++) {
-            if (!storage[i].equals(o.storage[i])) {
+        int front1 = this.front;
+        int front2 = o.front;
+
+        int back1 = this.back;
+        int back2 = o.back;
+
+        while (front1 < this.size && front2 < o.size) {
+            if (front1 == this.capacity) {
+                front1 = 0;
+            }
+
+            if (front2 == o.capacity) {
+                front2 = 0;
+            }
+
+            if (!storage[front1].equals(o.storage[front2])) {
                 return false;
             }
+
+            if (front1 == back1 || front2 == back2) {
+                break;
+            }
+
+            front1++;
+            front2++;
         }
 
         return true;
