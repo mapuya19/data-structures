@@ -33,12 +33,19 @@ public class MyList<E> implements List<E> {
         Node<E> current = this.head;
         Node<E> n = new Node<>(item);
 
-        // Add at head
-        if (pos == 0) {
+        // Add at head on empty list
+        if (pos == 0 && size == 0) {
             this.head = n;
             this.tail = n;
             head.previous = null;
             tail.next = null;
+        }
+
+        // Add at head
+        else if (pos == 0) {
+            head.previous = n;
+            n.next = head;
+            this.head = n;
         }
 
         // Add at tail
@@ -99,9 +106,9 @@ public class MyList<E> implements List<E> {
 
         // Remove at head
         if (head.data == current.data) {
+            head.next.previous = current.next;
             head = current.next;
             head.previous = null;
-            head.next.previous = current.next;
         }
 
         // Remove at tail
@@ -157,13 +164,13 @@ public class MyList<E> implements List<E> {
                     removeThis.previous.next = removeThis.next;
 
                 size--;
-                break;
+                return removeThis.data;
             }
 
             current = current.next;
         }
 
-        return removeThis.data;
+        return null;
     }
 
     /**
@@ -202,7 +209,7 @@ public class MyList<E> implements List<E> {
     public E get(int pos) throws NoSuchElementException {
         // Check if head is null
         if (head == null) {
-            return null;
+            throw new NoSuchElementException("No elements in List.");
         }
 
         // Check if pos is valid
@@ -240,6 +247,7 @@ public class MyList<E> implements List<E> {
     public void clear() {
         this.head = null;
         this.tail = null;
+        size = 0;
     }
 
     /**

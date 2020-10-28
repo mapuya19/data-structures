@@ -40,6 +40,10 @@ public class MyStack<E> implements Stack<E> {
      * @return the element from the top of this stack or null if this stack is empty
      */
     public E pop() {
+        if (top == null) {
+            return null;
+        }
+
         Node<E> popped = top;
         top = top.next;
 
@@ -50,6 +54,10 @@ public class MyStack<E> implements Stack<E> {
      * @return the element from the top of this stack or null if this stack is empty
      */
     public E top() {
+        if (top == null) {
+            return null;
+        }
+
         return top.data;
     }
 

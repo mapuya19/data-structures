@@ -10,7 +10,7 @@ public class MyQueue<E> implements Queue<E>{
 
     // Default Constructor
     public MyQueue() {
-        storage = (E[]) new Object[capacity];
+        storage = (E[]) new Object[10];
         this.capacity = 10;
         this.size = 0;
         front = -1;
@@ -35,6 +35,15 @@ public class MyQueue<E> implements Queue<E>{
         // Check if item is null
         if (item == null) {
             throw new IllegalArgumentException("Item must not be null");
+        }
+
+        if (size == 0) {
+            storage[0] = item;
+            front = 0;
+            back = 0;
+            size++;
+
+            return;
         }
 
         // Check if queue is full and grow if necessary
@@ -84,7 +93,7 @@ public class MyQueue<E> implements Queue<E>{
     public E dequeue() {
         // Make sure dequeue index is valid
         if (front == -1) {
-            System.err.println("Cannot dequeue from empty list");
+            return null;
         }
 
         E removeThis;
@@ -99,7 +108,7 @@ public class MyQueue<E> implements Queue<E>{
 
         else {
             // Reset front tracker if front was at end of array
-            if (front == size - 1) {
+            if (front == size) {
                 front = 0;
             }
 
@@ -117,6 +126,10 @@ public class MyQueue<E> implements Queue<E>{
      * @return  the element from the top of this queue or null if this queue is empty
      */
     public E peek() {
+        if (size == 0) {
+            return null;
+        }
+
         return storage[front];
     }
 
@@ -157,6 +170,10 @@ public class MyQueue<E> implements Queue<E>{
      * @return a string representation of this queue.
      */
     public String toString () {
+        if (size == 0) {
+            return "";
+        }
+
         StringBuilder storageString = new StringBuilder();
         int counter = front;
 
