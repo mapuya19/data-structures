@@ -8,14 +8,16 @@ public class MyQueue<E> implements Queue<E>{
     int front;
     int back;
 
+    // Default Constructor
     public MyQueue() {
         storage = (E[]) new Object[capacity];
-        this.capacity = 5;
+        this.capacity = 10;
         this.size = 0;
         front = -1;
         back = -1;
     }
 
+    // Constructor with given capacity
     public MyQueue(int capacity) {
         storage = (E[]) new Object[capacity];
         this.capacity = capacity;
@@ -39,10 +41,12 @@ public class MyQueue<E> implements Queue<E>{
         if (size == storage.length - 1 && size == capacity) {
             E[] newStorage = (E[]) new Object[storage.length * 2];
 
+            // If array is in order, just copy normally
             if (front <= back) {
                 System.arraycopy(storage, front, newStorage, front, capacity);
             }
 
+            // Copy array using circular references
             else {
                 int n1 = storage.length - front;
                 int n2 = back + 1;
@@ -54,6 +58,7 @@ public class MyQueue<E> implements Queue<E>{
                 back = capacity - 1;
             }
 
+            // Update pointers and tracker variables
             storage = newStorage;
             capacity = storage.length;
             storage[++back] = item;
@@ -77,6 +82,7 @@ public class MyQueue<E> implements Queue<E>{
      * @return the element from the front of this queue or null if this queue is empty
      */
     public E dequeue() {
+        // Make sure dequeue index is valid
         if (front == -1) {
             System.err.println("Cannot dequeue from empty list");
         }
@@ -85,13 +91,20 @@ public class MyQueue<E> implements Queue<E>{
         removeThis = storage[front];
         storage[front] = null;
 
+        // Check if one element is left
         if (front == back) {
             front = -1;
             back = -1;
-        } else {
+        }
+
+        else {
+            // Reset front tracker if front was at end of array
             if (front == size - 1) {
                 front = 0;
-            } else {
+            }
+
+            // Standard update front
+            else {
                 front = front + 1;
             }
         }
@@ -114,16 +127,19 @@ public class MyQueue<E> implements Queue<E>{
      *         false, otherwise
      */
     public boolean equals(Object obj) {
+        // Check that Object is Queue
         if (!(obj instanceof MyQueue)) {
             return false;
         }
 
         MyQueue<E> o = (MyQueue<E>) obj;
 
+        // Check if sizes are the same
         if (this.size != o.size) {
             return false;
         }
 
+        // Check each individual index
         for (int i = 0; i < this.size; i++) {
             if (!storage[i].equals(o.storage[i])) {
                 return false;
