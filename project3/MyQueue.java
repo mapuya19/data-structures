@@ -38,7 +38,7 @@ public class MyQueue<E> implements Queue<E>{
         }
 
         // Check if queue is full and grow if necessary
-        if (size == storage.length - 1 && size == capacity) {
+        if (size == storage.length && size == capacity) {
             E[] newStorage = (E[]) new Object[storage.length * 2];
 
             // If array is in order, just copy normally
@@ -168,7 +168,7 @@ public class MyQueue<E> implements Queue<E>{
             if (storage[counter] != null) {
                 storageString.append(storage[counter]);
 
-                if (storage[counter + 1] != null) {
+                if (counter != back) {
                     storageString.append(", ");
                 }
             }

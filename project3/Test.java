@@ -80,9 +80,5 @@ public class Test {
 
         testQueue.enqueue(9);
         System.out.println("testQueue: " + testQueue.toString());
-
-//        testQueue.enqueue(7);
-//        testQueue.enqueue(8);
-//        testQueue.enqueue(5);
     }
 }
