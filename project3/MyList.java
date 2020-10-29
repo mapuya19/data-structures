@@ -1,11 +1,18 @@
 package project3;
 import java.util.NoSuchElementException;
 
+/**
+ * This class represents a generic doubly LinkedList.
+ * @author Matthew Apuya
+ * @version 10/29/2020
+ * @param <E>
+ */
 public class MyList<E> implements List<E> {
     Node<E> head;
     Node<E> tail;
     int size;
 
+    // Default Constructor
     public MyList() {
         head = null;
         size = 0;

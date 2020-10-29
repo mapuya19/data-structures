@@ -1,5 +1,11 @@
 package project3;
 
+/**
+ * This class represents a generic circular array-based Queue.
+ * @author Matthew Apuya
+ * @version 10/29/2020
+ * @param <E>
+ */
 public class MyQueue<E> implements Queue<E>{
     E[] storage;
     int capacity;
@@ -8,7 +14,7 @@ public class MyQueue<E> implements Queue<E>{
     int front;
     int back;
 
-    // Default Constructor
+    // Default Constructor (default capacity = 10)
     public MyQueue() {
         storage = (E[]) new Object[10];
         this.capacity = 10;
@@ -47,7 +53,7 @@ public class MyQueue<E> implements Queue<E>{
             return;
         }
 
-        // Check if queue is full and grow if necessary
+        // Check if queue is full and grow if necessary (capacity * 2)
         if (size == storage.length && size == capacity) {
             E[] newStorage = (E[]) new Object[storage.length * 2];
 

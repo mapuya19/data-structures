@@ -1,10 +1,17 @@
 package project3;
 
+/**
+ * This class represents a generic Stack implemented using a singly LinkedList.
+ * @author Matthew Apuya
+ * @version 10/29/2020
+ * @param <E>
+ */
 public class MyStack<E> implements Stack<E> {
     Node<E> top;
     Node<E> bottom;
     int size;
 
+    // Default Constructor
     public MyStack() {
         top = null;
         bottom = null;
