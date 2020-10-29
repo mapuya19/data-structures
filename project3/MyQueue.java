@@ -109,7 +109,7 @@ public class MyQueue<E> implements Queue<E>{
 
         else {
             // Reset front tracker if front was at end of array
-            if (front == capacity) {
+            if (front == capacity - 1) {
                 front = 0;
             }
 
@@ -204,6 +204,30 @@ public class MyQueue<E> implements Queue<E>{
 
         StringBuilder storageString = new StringBuilder();
         int counter = front;
+
+        // Check if array is full and front & back are next to each other
+        if (counter == back + 1 && storage.length == capacity) {
+            while (counter != back) {
+                // If counter reaches capacity before back, point counter to front
+                if (counter == storage.length) {
+                    counter = 0;
+                }
+
+                if (storage[counter] != null) {
+                    storageString.append(storage[counter]);
+
+                    // Add comma if next element exists
+                    if (counter != back) {
+                        storageString.append(", ");
+                    }
+                }
+
+                counter++;
+            }
+
+            storageString.append(storage[back]);
+            return storageString.toString();
+        }
 
         // Iterate through queue until reaching the end
         while (counter != back + 1) {
