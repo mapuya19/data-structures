@@ -1,13 +1,18 @@
 package project4;
 
-import java.text.NumberFormat;
-
+/**
+ * This class contains various methods for converting numbers written using different number systems:
+ * binary, decimal, hexadecimal. The decimal numbers are represented using int type.
+ * The binary and hexadecimal numbers are represented using binary and hexadecimal strings.
+ * @author Matthew Apuya
+ * @version 11/16/20
+ */
 public class Converter {
     public static int binaryToDecimal(String binary) throws NumberFormatException {
         if (binary == null) {
             throw new IllegalArgumentException("binary is null");
         }
-        
+
         return 0;
     }
 
