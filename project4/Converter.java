@@ -15,7 +15,21 @@ public class Converter {
             throw new IllegalArgumentException("binary is null");
         }
 
-        return 0;
+        if (binary.substring(0, 2).equals("0b") || binary.substring(0, 2).equals("0x")) {
+            binary = binary.substring(2);
+        }
+
+        return realBinToDec(binary,0);
+    }
+
+    private static int realBinToDec(String binary, int current) {
+        int n = binary.length();
+
+        if (current == n-1) {
+            return binary.charAt(current) - '0';
+        }
+
+        return ((binary.charAt(current) - '0') << (n - current - 1)) + realBinToDec(binary, current + 1);
     }
 
     public static String binaryToHex(String binary) {
