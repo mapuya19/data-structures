@@ -9,13 +9,11 @@ package project4;
  */
 public class Converter {
     public static int binaryToDecimal(String binary) throws NumberFormatException {
-        int start = 0;
-
         if (binary == null) {
             throw new IllegalArgumentException("binary is null");
         }
 
-        if (binary.substring(0, 2).equals("0b") || binary.substring(0, 2).equals("0x")) {
+        if (binary.startsWith("0b") || binary.startsWith("0x")) {
             binary = binary.substring(2);
         }
 
@@ -25,7 +23,7 @@ public class Converter {
     private static int realBinToDec(String binary, int current) {
         int n = binary.length();
 
-        if (current == n-1) {
+        if (current == n - 1) {
             return binary.charAt(current) - '0';
         }
 
@@ -34,55 +32,66 @@ public class Converter {
 
     public static String binaryToHex(String binary) {
         if (binary == null) {
-            throw new IllegalArgumentException("binary is null");
+            throw new IllegalArgumentException("Binary passed is null");
         }
 
-        String result = "";
-        int remainder = n % 16;
-
+        // If empty string, return empty string
         if (binary.length() == 0) {
             return "";
-        } else {
-            switch (remainder) {
-                case 10:
-                    result = "A";
-                    break;
-                case 11:
-                    result = "B";
-                    break;
-                case 12:
-                    result = "C";
-                    break;
-                case 13:
-                    result = "D";
-                    break;
-                case 14:
-                    result = "E";
-                    break;
-                case 15:
-                    result = "F";
-                    break;
-                default:
-                    result = remainder + result;
-                    break;
-            }
-            return Hexa(Integer.toString(n / 16)) + result;
         }
 
-        return "";
+        // Ignore prefix
+        if (binary.startsWith("0b") || binary.startsWith("0x")) {
+            binary = binary.substring(2);
+        }
+
+        // Ensure binary is at least length of 4
+        if (binary.length() == 1) {
+            binary = "000" + binary;
+        } else if (binary.length() == 2) {
+            binary = "00" + binary;
+        } else if (binary.length() == 3) {
+            binary = "0" + binary;
+        }
+
+        // Convert substring to decimal
+        String bits = binary.substring(binary.length() - 4);
+        int decimal = (8 * (bits.charAt(0) - '0')) + (4 * (bits.charAt(1) - '0')) + (2 * (bits.charAt(2) - '0')) + (bits.charAt(3) - '0');
+
+        // Convert decimal to digit of hex
+        char hexDigit;
+        if (decimal < 10) {
+            hexDigit = (char)(decimal + '0');
+        } else {
+            hexDigit = (char)(decimal - 10 + 'A');
+        }
+
+//        return binaryToHex(binary.substring(0,binary.length() - 4)) + "" + hexDigit;
+        return binaryToHex(binary.substring(0,binary.length() - 4)) + hexDigit;
     }
 
     public static String decimalToBinary(int decimal) {
-        if (decimal == 0) {
-            return "0";
+        StringBuilder test = new StringBuilder();
+        if (decimal == 0){
+            return "";
         } else {
-            return (decimal % 2 + 10 * decimalToBinary(decimal / 2));
+            return decimalToBinary(decimal / 2) + "" + (decimal % 2);
         }
     }
 
     public static String decimalToHex(int decimal) {
+        StringBuilder hex = new StringBuilder();
 
-        return "";
+        if (decimal > 0) {
+            String hexNumber = decimalToHex(decimal / 16);
+            String hexCode = "0123456789ABCDEF";
+            int hexInt = decimal % 16;
+            char hexToAdd = hexCode.charAt(hexInt);
+
+            hex.append(hexNumber).append(hexToAdd);
+        }
+
+        return hex.toString();
     }
 
     public static String hexToBinary(String hex) throws NumberFormatException {
