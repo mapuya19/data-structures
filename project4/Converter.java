@@ -9,6 +9,8 @@ package project4;
  */
 public class Converter {
     public static int binaryToDecimal(String binary) throws NumberFormatException {
+        int start = 0;
+
         if (binary == null) {
             throw new IllegalArgumentException("binary is null");
         }
@@ -21,12 +23,47 @@ public class Converter {
             throw new IllegalArgumentException("binary is null");
         }
 
+        String result = "";
+        int remainder = n % 16;
+
+        if (binary.length() == 0) {
+            return "";
+        } else {
+            switch (remainder) {
+                case 10:
+                    result = "A";
+                    break;
+                case 11:
+                    result = "B";
+                    break;
+                case 12:
+                    result = "C";
+                    break;
+                case 13:
+                    result = "D";
+                    break;
+                case 14:
+                    result = "E";
+                    break;
+                case 15:
+                    result = "F";
+                    break;
+                default:
+                    result = remainder + result;
+                    break;
+            }
+            return Hexa(Integer.toString(n / 16)) + result;
+        }
+
         return "";
     }
 
     public static String decimalToBinary(int decimal) {
-
-        return "";
+        if (decimal == 0) {
+            return "0";
+        } else {
+            return (decimal % 2 + 10 * decimalToBinary(decimal / 2));
+        }
     }
 
     public static String decimalToHex(int decimal) {
