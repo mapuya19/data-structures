@@ -5,7 +5,7 @@ package project4;
  * binary, decimal, hexadecimal. The decimal numbers are represented using int type.
  * The binary and hexadecimal numbers are represented using binary and hexadecimal strings.
  * @author Matthew Apuya
- * @version 11/16/20
+ * @version 11/15/20
  */
 public class Converter {
     // Finished (Class Tests)
@@ -14,16 +14,18 @@ public class Converter {
             throw new IllegalArgumentException("Binary parameter is null");
         }
 
-        if (binary.startsWith("0b") || binary.startsWith("0x")) {
+        if (binary.startsWith("0b")) {
             binary = binary.substring(2);
+        } else {
+            throw new NumberFormatException("Binary missing / has wrong prefix");
         }
 
         if (binary.length() > 31) {
             throw new NumberFormatException("Binary parameter is invalid (too large)");
         }
 
-        if (!binary.matches("^[0-9]*$")) {
-            throw new NumberFormatException("Binary parameter is invalid (not a numeric)");
+        if (!binary.matches("^[0-1]*$")) {
+            throw new NumberFormatException("Binary parameter is invalid");
         }
 
         return realBinToDec(binary,0);
@@ -51,22 +53,32 @@ public class Converter {
         }
 
         // Ignore prefix
-        if (binary.startsWith("0b") || binary.startsWith("0x")) {
+        if (binary.startsWith("0b")) {
             binary = binary.substring(2);
+        } else {
+            throw new NumberFormatException("Binary missing / has wrong prefix");
+        }
+
+        if (binary.length() > 31) {
+            throw new NumberFormatException("Parameter is too large");
+        }
+
+        // Ensure that substring is valid
+        if (!binary.matches("^[0-1]*$")) {
+            throw new NumberFormatException("Parameter is invalid");
+        }
+
+        // Ensure binary is at least length of 4
+       return realBinToHex(binary);
+    }
+
+    public static String realBinToHex(String binary) {
+        if (binary.length() == 0) {
+            return "";
         }
 
         int counter = binary.length();
 
-        if (binary.length() > 31) {
-            throw new NumberFormatException("Parameter must be valid binary");
-        }
-
-        // Ensure that substring is valid
-        if (!binary.matches("^[0-9]*$")) {
-            throw new NumberFormatException("Parameter must be number");
-        }
-
-        // Ensure binary is at least length of 4
         if (binary.length() == 1) {
             binary = "000" + binary;
         } else if (binary.length() == 2) {
@@ -90,16 +102,15 @@ public class Converter {
         String substring = binary.substring(0, binary.length() - 4);
 
         if (counter < 6) {
-            return "0x" + binaryToHex(substring) + hexDigit;
+            return "0x" + realBinToHex(substring) + hexDigit;
         } else {
 //            return binaryToHex(binary.substring(0,binary.length() - 4)) + "" + hexDigit;
-            return binaryToHex(substring) + hexDigit;
+            return realBinToHex(substring) + hexDigit;
         }
     }
 
     // Finished (Class Tests)
     public static String decimalToBinary(int decimal) {
-
         if (decimal == 0) {
             return "0b0";
         }
@@ -123,8 +134,6 @@ public class Converter {
 
     // Finished (Class Tests)
     public static String decimalToHex(int decimal) {
-        StringBuilder hex = new StringBuilder();
-
         if (decimal < 0) {
             return null;
         }
@@ -167,8 +176,10 @@ public class Converter {
             throw new NumberFormatException("Hex is too large");
         }
 
-        if (hex.startsWith("0b") || hex.startsWith("0x")) {
+        if ( hex.startsWith("0x")) {
             hex = hex.substring(2);
+        } else {
+            throw new NumberFormatException("Hex missing / has wrong prefix");
         }
 
         if (!hex.matches("(^[0-9A-F]*$)")) {
@@ -196,7 +207,7 @@ public class Converter {
         return hexValues[index] + hexToBinary(hex.substring(1));
     }
 
-    // Unfinished (ArithmeticException)
+    // Finished (Class Tests
     public static int hexToDecimal(String hex) throws IllegalArgumentException, NumberFormatException, ArithmeticException {
         if (hex == null) {
             throw new IllegalArgumentException("hex is null");
@@ -206,8 +217,10 @@ public class Converter {
             throw new NumberFormatException("Hex is too large");
         }
 
-        if (hex.startsWith("0b") || hex.startsWith("0x")) {
+        if (hex.startsWith("0x")) {
             hex = hex.substring(2);
+        } else {
+            throw new NumberFormatException("Hex missing / has wrong prefix");
         }
 
         if (!hex.matches("(^[0-9A-F]*$)")) {
@@ -215,11 +228,15 @@ public class Converter {
         }
 
         int hexLength = hex.length() - 1;
+        int finalDec = realHexToDec(hex, hexLength);
 
-        return realHexToDec(hex, hexLength);
+        if (finalDec < 0) {
+            throw new ArithmeticException("Hex is too large");
+        } else {
+            return finalDec;
+        }
     }
 
-    // Arithmetic Exception goes here?
     public static int realHexToDec(String hex, int hexLength) {
         String key = "0123456789ABCDEF";
         hex = hex.toUpperCase();
