@@ -8,6 +8,7 @@ package project4;
  * @version 11/16/20
  */
 public class Converter {
+    // Finished (Class Tests)
     public static int binaryToDecimal(String binary) throws NumberFormatException {
         if (binary == null) {
             throw new IllegalArgumentException("binary is null");
@@ -15,6 +16,15 @@ public class Converter {
 
         if (binary.startsWith("0b") || binary.startsWith("0x")) {
             binary = binary.substring(2);
+        }
+
+        if (binary.length() > 31) {
+            throw new NumberFormatException("Parameter must be valid binary");
+        }
+
+        // Ensure that substring is valid
+        if (!binary.matches("^[0-9]*$")) {
+            throw new NumberFormatException("Parameter must be number");
         }
 
         return realBinToDec(binary,0);
@@ -30,6 +40,7 @@ public class Converter {
         return ((binary.charAt(current) - '0') << (n - current - 1)) + realBinToDec(binary, current + 1);
     }
 
+    // Finished (Class Tests)
     public static String binaryToHex(String binary) {
         if (binary == null) {
             throw new IllegalArgumentException("Binary passed is null");
@@ -43,6 +54,17 @@ public class Converter {
         // Ignore prefix
         if (binary.startsWith("0b") || binary.startsWith("0x")) {
             binary = binary.substring(2);
+        }
+
+        int counter = binary.length();
+
+        if (binary.length() > 31) {
+            throw new NumberFormatException("Parameter must be valid binary");
+        }
+
+        // Ensure that substring is valid
+        if (!binary.matches("^[0-9]*$")) {
+            throw new NumberFormatException("Parameter must be number");
         }
 
         // Ensure binary is at least length of 4
@@ -65,22 +87,36 @@ public class Converter {
         } else {
             hexDigit = (char)(decimal - 10 + 'A');
         }
-
-//        return binaryToHex(binary.substring(0,binary.length() - 4)) + "" + hexDigit;
-        return binaryToHex(binary.substring(0,binary.length() - 4)) + hexDigit;
+        if (counter < 6) {
+            return "0x" + binaryToHex(binary.substring(0,binary.length() - 4)) + hexDigit;
+        } else {
+//            return binaryToHex(binary.substring(0,binary.length() - 4)) + "" + hexDigit;
+            return binaryToHex(binary.substring(0,binary.length() - 4)) + hexDigit;
+        }
     }
 
+    // Prefixes
     public static String decimalToBinary(int decimal) {
-        StringBuilder test = new StringBuilder();
         if (decimal == 0){
-            return "";
-        } else {
+            return "0b";
+        }
+
+        if (decimal < 0) {
+            return null;
+        }
+
+        else {
             return decimalToBinary(decimal / 2) + "" + (decimal % 2);
         }
     }
 
+    // Prefixes
     public static String decimalToHex(int decimal) {
         StringBuilder hex = new StringBuilder();
+
+        if (decimal < 0) {
+            return null;
+        }
 
         if (decimal > 0) {
             String hexNumber = decimalToHex(decimal / 16);
