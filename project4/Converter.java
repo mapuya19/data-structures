@@ -8,7 +8,13 @@ package project4;
  * @version 11/15/20
  */
 public class Converter {
-    // Wrapper Method for Binary to Decimal
+    /** Wrapper Method for Binary to Decimal
+     *
+     * @param binary The binary string to be converted
+     * @return The decimal number equal in value to the binary string passed as the parameter
+     * @throws IllegalArgumentException if the parameter is null
+     * @throws NumberFormatException if the binary string passed to the function is invalid
+     */
     public static int binaryToDecimal(String binary) throws IllegalArgumentException, NumberFormatException {
         // Null check
         if (binary == null) {
@@ -36,7 +42,12 @@ public class Converter {
         return realBinToDec(binary,0);
     }
 
-    // Recursive Method for Binary to Decimal
+    /**
+     * Converts binary strings to hexadecimal strings. More specifically given a valid string representing a binary number returns the string representing the hexadecimal number with the same value.
+     * @param binary The binary string to be converted
+     * @param current Index marker
+     * @return The decimal number equal in value to the binary string passed as the parameter
+     */
     private static int realBinToDec(String binary, int current) {
         // Base Case
         if (current == binary.length() - 1) {
@@ -47,7 +58,13 @@ public class Converter {
         return ((binary.charAt(current) - '0') << (binary.length() - current - 1)) + realBinToDec(binary, current + 1);
     }
 
-    // Wrapper Method for Binary to Hex
+    /** Wrapper Method for Binary to Hex
+     *
+     * @param binary The binary string to be converted
+     * @return The hexadecimal number equal in value to the binary string passed as the parameter
+     * @throws IllegalArgumentException if the parameter is null
+     * @throws NumberFormatException if the binary string passed to the function is invalid
+     */
     public static String binaryToHex(String binary) throws IllegalArgumentException, NumberFormatException {
         // Null Check
         if (binary == null) {
@@ -75,7 +92,11 @@ public class Converter {
        return realBinToHex(binary);
     }
 
-    // Recursive Method for Binary to Hex
+    /** Converts binary strings to decimal numbers. More specifically given a valid string representing a binary number returns a non-negative decimal integer with the same value.
+     *
+     * @param binary The binary string to be converted
+     * @return The hexadecimal number equal in value to the binary string passed as the parameter
+     */
     public static String realBinToHex(String binary) {
         // Base Case
         if (binary.length() == 0) {
@@ -115,7 +136,11 @@ public class Converter {
         }
     }
 
-    // Wrapper Method for Decimal to Binary
+    /** Wrapper Method for Decimal to Binary
+     *
+     * @param decimal The decimal number to be converted
+     * @return The binary string equal in value to the decimal number passed as the parameter or null if the decimal is negative
+     */
     public static String decimalToBinary(int decimal) {
         // Invalid decimal
         if (decimal < 0) {
@@ -131,7 +156,11 @@ public class Converter {
         return realDecToBin(decimal);
     }
 
-    // Recursive Method for Decimal to Binary
+    /** Converts decimal numbers to binary strings. More specifically given a non-negative decimal integer returns the string representing the binary number with the same value.
+     *
+     * @param decimal The decimal number to be converted
+     * @return The binary string equal in value to the decimal number passed as the parameter or null if the decimal is negative
+     */
     public static String realDecToBin(int decimal) {
         // Base Case, append to front
         if (decimal == 0) {
@@ -144,7 +173,11 @@ public class Converter {
         }
     }
 
-    // Wrapper Method for Decimal to Hex
+    /** Wrapper Method for Decimal to Hex
+     *
+     * @param decimal The decimal number to be converted
+     * @return The hexadecimal string equal in value to the decimal number passed as the parameter or null if the decimal is negative
+     */
     public static String decimalToHex(int decimal) {
         // Invalid decimal
         if (decimal < 0) {
@@ -160,7 +193,11 @@ public class Converter {
         return realDecToHex(decimal);
     }
 
-    // Recursive Method for Decimal to Hex
+    /** Converts decimal numbers to hexadecimal strings. More specifically given a non-negative decimal integer returns the string representing the hexadecimal number with the same value.
+     *
+     * @param decimal The decimal number to be converted
+     * @return The hexadecimal string equal in value to the decimal number passed as the parameter or null if the decimal is negative
+     */
     public static String realDecToHex(int decimal) {
         StringBuilder hex = new StringBuilder();
 
@@ -180,7 +217,13 @@ public class Converter {
         return hex.toString();
     }
 
-    // Wrapper Method for Hex to Bin
+    /** Wrapper Method for Hex to Bin
+     *
+     * @param hex The hexadecimal string to be converted
+     * @return The binary string equal in value to the hexadecimal string passed as the parameter
+     * @throws IllegalArgumentException if the parameter is null
+     * @throws NumberFormatException if the hexadecimal string passed to the function is invalid
+     */
     public static String hexToBinary(String hex) throws IllegalArgumentException, NumberFormatException {
         // Null Check
         if (hex == null) {
@@ -208,7 +251,11 @@ public class Converter {
         return "0b" + finalHex.replaceAll("^0+(?!$)", "");
     }
 
-    // Recursive Method for Hex to Bin
+    /** Converts hexadecimal strings to binary strings. More specifically given a valid string representing a hexadecimal number returns the string representing the binary number with the same value.
+     *
+     * @param hex The hexadecimal string to be converted
+     * @return The binary string equal in value to the hexadecimal string passed as the parameter
+     */
     public static String realHexToBin(String hex) {
         // Base Case
         if (hex.length() == 0) {
@@ -229,7 +276,14 @@ public class Converter {
         return key[index] + realHexToBin(hex.substring(1));
     }
 
-    // Wrapper Method for Hex to Decimal
+    /** Wrapper Method for Hex to Decimal
+     *
+     * @param hex The hexadecimal string to be converted
+     * @return The binary string equal in value to the hexadecimal string passed as the parameter
+     * @throws IllegalArgumentException if the parameter is null
+     * @throws NumberFormatException if the hexadecimal string passed to the function is invalid
+     * @throws ArithmeticException if hexadecimal is too large
+     */
     public static int hexToDecimal(String hex) throws IllegalArgumentException, NumberFormatException, ArithmeticException {
         // Null check
         if (hex == null) {
@@ -264,7 +318,12 @@ public class Converter {
         }
     }
 
-    // Recursive Method for Hex to Decimal
+    /** Converts hexadecimal strings to binary strings. More specifically given a valid string representing a hexadecimal number returns the string representing the binary number with the same value.
+     *
+     * @param hex The hexadecimal string to be converted
+     * @param hexLength Length tracker
+     * @return The binary string equal in value to the hexadecimal string passed as the parameter
+     */
     public static int realHexToDec(String hex, int hexLength) {
         String key = "0123456789ABCDEF";
         hex = hex.toUpperCase();
