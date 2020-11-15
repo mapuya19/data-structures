@@ -95,10 +95,11 @@ public class Converter {
         }
     }
 
-    // Prefixes
+    // Finished (Class Tests)
     public static String decimalToBinary(int decimal) {
-        if (decimal == 0){
-            return "0b";
+
+        if (decimal == 0) {
+            return "0b0";
         }
 
         if (decimal < 0) {
@@ -106,11 +107,19 @@ public class Converter {
         }
 
         else {
-            return decimalToBinary(decimal / 2) + "" + (decimal % 2);
+            return realDecToBin(decimal);
         }
     }
 
-    // Prefixes
+    public static String realDecToBin(int decimal) {
+        if (decimal == 0) {
+            return "0b";
+        } else {
+            return realDecToBin(decimal / 2) + "" + (decimal % 2);
+        }
+    }
+
+    // Finished (Class Tests)
     public static String decimalToHex(int decimal) {
         StringBuilder hex = new StringBuilder();
 
@@ -118,14 +127,30 @@ public class Converter {
             return null;
         }
 
-        if (decimal > 0) {
-            String hexNumber = decimalToHex(decimal / 16);
-            String hexCode = "0123456789ABCDEF";
-            int hexInt = decimal % 16;
-            char hexToAdd = hexCode.charAt(hexInt);
-
-            hex.append(hexNumber).append(hexToAdd);
+        if (decimal == 0) {
+            return "0x0";
         }
+
+        return realDecToHex(decimal);
+    }
+
+    public static String realDecToHex(int decimal) {
+        StringBuilder hex = new StringBuilder();
+
+        if (decimal == 0) {
+            return "0x";
+        }
+
+        String hexNumber = realDecToHex(decimal / 16);
+        String hexCode = "0123456789ABCDEF";
+        int hexInt = decimal % 16;
+        char hexToAdd = hexCode.charAt(hexInt);
+
+        hex.append(hexNumber).append(hexToAdd);
+
+//        if (hex.length() == 3) {
+//            return hex.toString() + 0;
+//        }
 
         return hex.toString();
     }
