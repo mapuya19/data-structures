@@ -9,9 +9,9 @@ package project4;
  */
 public class Converter {
     // Finished (Class Tests)
-    public static int binaryToDecimal(String binary) throws NumberFormatException {
+    public static int binaryToDecimal(String binary) throws IllegalArgumentException, NumberFormatException {
         if (binary == null) {
-            throw new IllegalArgumentException("binary is null");
+            throw new IllegalArgumentException("Binary parameter is null");
         }
 
         if (binary.startsWith("0b") || binary.startsWith("0x")) {
@@ -19,12 +19,11 @@ public class Converter {
         }
 
         if (binary.length() > 31) {
-            throw new NumberFormatException("Parameter must be valid binary");
+            throw new NumberFormatException("Binary parameter is invalid (too large)");
         }
 
-        // Ensure that substring is valid
         if (!binary.matches("^[0-9]*$")) {
-            throw new NumberFormatException("Parameter must be number");
+            throw new NumberFormatException("Binary parameter is invalid (not a numeric)");
         }
 
         return realBinToDec(binary,0);
@@ -41,9 +40,9 @@ public class Converter {
     }
 
     // Finished (Class Tests)
-    public static String binaryToHex(String binary) {
+    public static String binaryToHex(String binary) throws IllegalArgumentException, NumberFormatException {
         if (binary == null) {
-            throw new IllegalArgumentException("Binary passed is null");
+            throw new IllegalArgumentException("Binary parameter is null");
         }
 
         // If empty string, return empty string
@@ -87,11 +86,14 @@ public class Converter {
         } else {
             hexDigit = (char)(decimal - 10 + 'A');
         }
+
+        String substring = binary.substring(0, binary.length() - 4);
+
         if (counter < 6) {
-            return "0x" + binaryToHex(binary.substring(0,binary.length() - 4)) + hexDigit;
+            return "0x" + binaryToHex(substring) + hexDigit;
         } else {
 //            return binaryToHex(binary.substring(0,binary.length() - 4)) + "" + hexDigit;
-            return binaryToHex(binary.substring(0,binary.length() - 4)) + hexDigit;
+            return binaryToHex(substring) + hexDigit;
         }
     }
 
@@ -155,16 +157,80 @@ public class Converter {
         return hex.toString();
     }
 
-    public static String hexToBinary(String hex) throws NumberFormatException {
+    // Unfinished (Base Case)
+    public static String hexToBinary(String hex) throws IllegalArgumentException, NumberFormatException {
         if (hex == null) {
             throw new IllegalArgumentException("hex is null");
         }
 
-        return "";
+        if (hex.length() > 10) {
+            throw new NumberFormatException("Hex is too large");
+        }
+
+        if (hex.startsWith("0b") || hex.startsWith("0x")) {
+            hex = hex.substring(2);
+        }
+
+        if (!hex.matches("(^[0-9A-F]*$)")) {
+            throw new NumberFormatException("Hex is invalid");
+        }
+
+        if (hex.length() == 0) {
+            return "";
+        }
+
+        String[] hexValues = {"0000","0001","0010","0011","0100","0101","0110","0111","1000","1001","1010","1011","1100","1101","1110","1111"};
+
+        char ch = hex.charAt(0);
+
+        int index;
+
+        if (ch >= '0' && ch <= '9') {
+            index = ch - '0';
+        }
+
+        else {
+            index = ch - 'A' + 10;
+        }
+
+        return hexValues[index] + hexToBinary(hex.substring(1));
     }
 
-    public static int hexToDecimal(String hex) throws NumberFormatException {
+    // Unfinished (ArithmeticException)
+    public static int hexToDecimal(String hex) throws IllegalArgumentException, NumberFormatException, ArithmeticException {
+        if (hex == null) {
+            throw new IllegalArgumentException("hex is null");
+        }
 
-        return 0;
+        if (hex.length() > 10) {
+            throw new NumberFormatException("Hex is too large");
+        }
+
+        if (hex.startsWith("0b") || hex.startsWith("0x")) {
+            hex = hex.substring(2);
+        }
+
+        if (!hex.matches("(^[0-9A-F]*$)")) {
+            throw new NumberFormatException("Hex is invalid");
+        }
+
+        int hexLength = hex.length() - 1;
+
+        return realHexToDec(hex, hexLength);
+    }
+
+    // Arithmetic Exception goes here?
+    public static int realHexToDec(String hex, int hexLength) {
+        String key = "0123456789ABCDEF";
+        hex = hex.toUpperCase();
+
+        if (hexLength < 0) {
+            return 0;
+        }
+
+        char c = hex.charAt(hexLength);
+        int d = key.indexOf(c);
+
+        return realHexToDec(hex, hexLength - 1) * 16 + d;
     }
 }
