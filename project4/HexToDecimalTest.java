@@ -60,7 +60,7 @@ public class HexToDecimalTest {
      */
     @Test(expected = ArithmeticException.class)
     public void invalidInputTooLarge1() {
-        System.out.println(Converter.hexToDecimal("0x80000000"));
+        Converter.hexToDecimal("0x80000000");
     }
 
     /**
@@ -69,7 +69,7 @@ public class HexToDecimalTest {
      */
     @Test(expected = ArithmeticException.class)
     public void invalidInputTooLarge2() {
-        System.out.println(Converter.hexToDecimal("0xFFFFFFFF"));
+        Converter.hexToDecimal("0xFFFFFFFF");
     }
 
     /**
