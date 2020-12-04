@@ -34,19 +34,74 @@ public class MeteoriteData {
         return null;
     }
 
+    // One Test Case
     public Meteorite getByLocation(Location loc) {
+        if (loc == null) {
+            throw new IllegalArgumentException("Location must not be null.");
+        }
 
-        return null;
+        if (storage.size() == 0) {
+            return null;
+        }
+
+        Iterator<Meteorite> iterate = storage.iterator();
+        double smallestDistance = 0;
+
+        while (iterate.hasNext()) {
+            if (iterate.next().getLocation() != null) {
+                smallestDistance = loc.getDistance(iterate.next().getLocation());
+                break;
+            }
+        }
+
+        Meteorite nearest = new Meteorite("nearest", 1337);
+
+        while (iterate.hasNext()) {
+            Meteorite temp = iterate.next();
+
+            if (temp.getLocation().equals(loc)) {
+                nearest = temp;
+            } else {
+                if (temp.getLocation() != null) {
+                    double tempDistance = Math.abs(loc.getDistance(temp.getLocation()));
+
+                    if (tempDistance < smallestDistance) {
+                        nearest = temp;
+                        smallestDistance = tempDistance;
+                    }
+                }
+            }
+        }
+
+        return nearest;
     }
 
+    // One Test Case
     public MeteoriteData getByYear(int year) {
+        MeteoriteData yearMatches = new MeteoriteData();
+        Iterator<Meteorite> iterate = storage.iterator();
 
-        return null;
+        if (year <= 0 || year >= 2020) {
+            throw new IllegalArgumentException("Year must be a positive integer less than the current year.");
+        } else {
+            while(iterate.hasNext()) {
+                Meteorite temp = iterate.next();
+
+                if (temp.getYear() == year) {
+                    yearMatches.add(temp);
+                }
+            }
+
+            if (yearMatches.storage.isEmpty()) {
+                return null;
+            }
+        }
+
+        return yearMatches;
     }
 
     public Iterator<Meteorite> iterator() {
-
-        return null;
+        return storage.iterator();
     }
 
     public boolean remove(Meteorite m) {
