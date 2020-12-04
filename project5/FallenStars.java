@@ -1,10 +1,5 @@
 package project5;
 
-import project2.Location;
-import project2.Meteorite;
-import project2.MeteoriteLinkedList;
-import project2.MeteoriteList;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -52,7 +47,7 @@ public class FallenStars {
             System.exit(1);
         }
 
-        MeteoriteList meteorites = new MeteoriteList();
+        MeteoriteData meteorites = new MeteoriteData();
         ArrayList<String> tempList;
 
         String line = null;
@@ -77,7 +72,7 @@ public class FallenStars {
                 String tempName = tempList.get(0);
                 int tempId = Integer.parseInt(tempList.get(1));
 
-                project2.Meteorite tempMeteorite = new project2.Meteorite(tempName, tempId);
+                Meteorite tempMeteorite = new Meteorite(tempName, tempId);
 
                 try {
                     tempMeteorite.setMass(Integer.parseInt(tempList.get(4)));
@@ -93,7 +88,7 @@ public class FallenStars {
                     //ignore this exception and skip to the next line
                 }
 
-                project2.Location tempLocation = new project2.Location(Double.parseDouble(tempList.get(7)), Double.parseDouble(tempList.get(8)));
+                Location tempLocation = new Location(Double.parseDouble(tempList.get(7)), Double.parseDouble(tempList.get(8)));
 
                 if (tempLocation == null) {
                     //skip
@@ -139,7 +134,7 @@ public class FallenStars {
                     // If user selects "year" and has valid parameters, String listing all Meteorites is printed
                     if (inputStrings[0].equals("year") && inputStrings.length == 2) {
                         try {
-                            MeteoriteLinkedList yearOutput = meteorites.getByYear(Integer.parseInt(inputStrings[1]));
+                            MeteoriteData yearOutput = meteorites.getByYear(Integer.parseInt(inputStrings[1]));
 
                             if (yearOutput == null) {
                                 System.out.println("Meteorite with matching year not found.");
@@ -155,7 +150,7 @@ public class FallenStars {
 
                     // If user selects "location" and has valid parameters, nearest meteorite is printed
                     else if (inputStrings[0].equals("location") && inputStrings.length == 3) {
-                            project2.Location inputLoc = new Location(Double.parseDouble(inputStrings[1]), Double.parseDouble(inputStrings[2]));
+                            Location inputLoc = new Location(Double.parseDouble(inputStrings[1]), Double.parseDouble(inputStrings[2]));
                             Meteorite locationOutput = meteorites.getByLocation(inputLoc);
 
                             if (locationOutput == null) {
@@ -169,7 +164,7 @@ public class FallenStars {
                     // If user selects "mass" and has valid parameters, String listing all Meteorites with matching mass within 10 grams is printed
                     else if (inputStrings[0].equals("mass") && inputStrings.length == 2) {
                         try {
-                            MeteoriteLinkedList massOutput = meteorites.getByMass(Integer.parseInt(inputStrings[1]), 10);
+                            MeteoriteData massOutput = meteorites.getByMass(Integer.parseInt(inputStrings[1]), 10);
 
                             if (massOutput == null) {
                                 System.out.println("Meteorite with matching mass not found.");

@@ -687,7 +687,6 @@ public class Testing {
 			tree1.add(1);
 			tree1.add(0);
 			tree1.add(5);
-//			System.out.println(tree1.getRange(0, 1).size());
 			if (tree1.getRange(0, 1).size() != 2)
 				fail("ArrayList should only contain 2 element");
 			if (tree1.getRange(0, 1).get(0) != 0)

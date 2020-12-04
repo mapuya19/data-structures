@@ -1,7 +1,5 @@
 package project5;
 
-import project2.Location;
-
 /**
  * This class represents a meteorite that consists of at least a name and a unique id,
  * @author Matthew Apuya
@@ -12,7 +10,7 @@ public class Meteorite implements Comparable<Meteorite> {
     private final int id;
     private int mass;
     private int year;
-    private project2.Location location;
+    private Location location;
 
     /**
      * Instantiates the Meteorite object.
@@ -60,7 +58,7 @@ public class Meteorite implements Comparable<Meteorite> {
      * @param loc The location of the Meteorite to be set.
      * @throws IllegalArgumentException if location is not valid.
      */
-    public void setLocation(project2.Location loc) throws IllegalArgumentException {
+    public void setLocation(Location loc) throws IllegalArgumentException {
         this.location = loc;
     }
 
