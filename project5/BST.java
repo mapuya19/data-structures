@@ -1,5 +1,7 @@
 package project5;
 
+import project3.MyStack;
+
 import java.util.*;
 
 public class BST < T extends Comparable <T> > {
@@ -264,30 +266,40 @@ public class BST < T extends Comparable <T> > {
         }
     }
 
-    // How to check instanceOf?
     public boolean contains(Object o) throws ClassCastException, NullPointerException {
         if (o == null) {
             throw new NullPointerException("Object is null");
         }
 
-        BSTNode checkThis = (BSTNode) o;
+        if (!(o instanceof Comparable<?>)) {
+            throw new ClassCastException("Object not comparable");
+        }
+
+        if (size == 0) {
+            return false;
+        }
+
+        BSTNode checkThis = new BSTNode((T) o);
 
         if (root.data.equals(checkThis.data)) {
             return true;
         }
 
-        return findInOrder(root, checkThis);
+        return recursiveContains(this.root, checkThis);
     }
 
-    private boolean findInOrder(BSTNode node, BSTNode checkThis) {
-        if (node != null) {
-            findInOrder(node.left, checkThis);
+    private boolean recursiveContains(BSTNode root, BSTNode checkThis) {
+        int compareValue = checkThis.compareTo(root);
 
-            if (node.data.equals(checkThis.data)) {
-                return true;
-            }
+        if (compareValue == 0)
+            return true;
 
-            findInOrder(node.right, checkThis);
+        if (compareValue < 0 && root.left != null) {
+            return recursiveContains(root.left, checkThis);
+        }
+
+        if (compareValue > 0 && root.right != null) {
+            return recursiveContains(root.right, checkThis);
         }
 
         return false;
@@ -299,65 +311,86 @@ public class BST < T extends Comparable <T> > {
 
     // Implemented with Stack
     public Iterator<T> iterator() {
-        Iterator<T> BSTIterator = new Iterator<T>() {
-            final Stack<BSTNode> stack = new Stack<BSTNode>();
+        return new BSTIterator();
+    }
 
-            public void iteratorMethod(BSTNode root) {
-                pushIt(root);
+    private class BSTIterator implements Iterator<T> {
+        private final MyStack<BSTNode> stack = new MyStack<BSTNode>();
+
+        public BSTIterator() {
+            pushIt(root);
+        }
+
+        @Override
+        public boolean hasNext() {
+            return !stack.empty();
+        }
+
+        @Override
+        public T next() {
+            BSTNode nextNode = stack.pop();
+            pushIt(nextNode.right);
+            return nextNode.data;
+        }
+
+        private void pushIt(BSTNode node){
+            if (node != null){
+                stack.push(node);
+                pushIt(node.left);
             }
-
-            @Override
-            public boolean hasNext() {
-                if (stack.empty()) {
-                    return false;
-                }
-                return true;
-            }
-
-            @Override
-            public T next() {
-                BSTNode nextNode = stack.pop();
-                pushIt(nextNode.right);
-                return nextNode.data;
-            }
-
-            private void pushIt(BSTNode node){
-                if (node != null){
-                    stack.push(node);
-                    pushIt(node.left);
-                }
-            }
-        };
-
-        return BSTIterator;
+        }
     }
 
     public ArrayList<T> getRange(T fromElement, T toElement) {
-        return helperGetRange(root, fromElement, toElement);
+        if (fromElement == null || toElement == null) {
+            throw new NullPointerException("Parameter is null");
+        }
+
+        if (fromElement.compareTo(toElement) > 0) {
+            throw new IllegalArgumentException("fromElement cannot be greater than toElement");
+        }
+
+        if (this.isEmpty()) {
+            return new ArrayList<T>();
+        }
+
+        if (fromElement.compareTo(toElement) == 0 && this.contains(fromElement)) {
+            ArrayList<T> edgeCaseEquals = new ArrayList<T>();
+            edgeCaseEquals.add(fromElement);
+            return edgeCaseEquals;
+        }
+
+        var rangedList = new ArrayList<T>();
+        helperGetRange(root, rangedList, fromElement, toElement);
+
+        return rangedList;
     }
 
-    // Not O(M)
-    public ArrayList<T> helperGetRange(BSTNode root, T fromElement, T toElement) {
-        if (root == null) {
-            throw new NullPointerException("Root is null");
+    public void helperGetRange(BSTNode node, ArrayList<T> ranged, T fromElement, T toElement) {
+        if (node == null)
+            return;
+
+        int from = fromElement.compareTo(node.data);
+        int to = toElement.compareTo(node.data);
+
+        if (from < 0) {
+            helperGetRange(node.left, ranged, fromElement, toElement);
         }
 
-        Iterator<T> search = this.iterator();
-        ArrayList<T> addThis = new ArrayList<T>();
-
-        while (search.next() != fromElement) {
-            if (search.next() == fromElement) {
-                addThis.add(search.next());
-                if (search.next() == toElement) {
-                    break;
-                }
-            }
+        if (from <= 0 && to >= 0) {
+            ranged.add(node.data);
         }
 
-        return addThis;
+        if (to > 0) {
+            helperGetRange(node.right, ranged, fromElement, toElement);
+        }
     }
 
     public T first() {
+        if (root == null) {
+            throw new NoSuchElementException("Tree is empty");
+        }
+
         return minValue(root);
     }
 
@@ -373,6 +406,10 @@ public class BST < T extends Comparable <T> > {
     }
 
     public T last() {
+        if (root == null) {
+            throw new NoSuchElementException("Tree is empty");
+        }
+
         return maxValue(root);
     }
 
@@ -387,7 +424,7 @@ public class BST < T extends Comparable <T> > {
         return (check.data);
     }
 
-    // O(N),
+    // O(N)
     public boolean equals(Object obj) {
         if (!(obj instanceof BST)) {
             return false;
@@ -411,6 +448,28 @@ public class BST < T extends Comparable <T> > {
         return true;
     }
 
+    public String toString() {
+        StringBuilder buildString = new StringBuilder();
+
+        if (this.isEmpty()) {
+            return ("[]");
+        }
+
+        Iterator<T> iterate = this.iterator();
+        buildString.append("[");
+
+        while (iterate.hasNext()) {
+            buildString.append(iterate.next());
+
+            if (iterate.hasNext()) {
+                buildString.append(", ");
+            }
+        }
+
+        buildString.append("]");
+        return buildString.toString();
+    }
+
     public Object[] toArray() {
         Iterator<T> iterate = this.iterator();
         ArrayList<T> tempArray = new ArrayList<T>();
@@ -420,5 +479,169 @@ public class BST < T extends Comparable <T> > {
         }
 
         return tempArray.toArray();
+    }
+
+    /**
+     * This class represents a generic Stack implemented using a singly LinkedList.
+     * @author Matthew Apuya
+     * @version 10/29/2020
+     * @param <E>
+     */
+    public static class MyStack<E>{
+        Node<E> top;
+        Node<E> bottom;
+        int size;
+
+        // Default Constructor
+        public MyStack() {
+            top = null;
+            bottom = null;
+            size = 0;
+        }
+
+        // Check if stack is empty, return false if so
+        public boolean empty() {
+            return top == null;
+        }
+
+        /**
+         * Add an element to the top of this stack
+         * @param item to be added to this stack
+         * @throws IllegalArgumentException if `item == null`
+         */
+        public void push(E item) {
+            // Check if item is null
+            if (item == null) {
+                throw new IllegalArgumentException("Item must not be null");
+            }
+
+            Node<E> n = new Node<>(item);
+
+            // Push on empty list
+            if (top == null) {
+                top = n;
+                bottom = n;
+            }
+
+            // Push to top
+            else {
+                n.next = top;
+                top = n;
+            }
+
+            size++;
+        }
+
+        /**
+         * Remove and return the element from the top of this stack
+         * @return the element from the top of this stack or null if this stack is empty
+         */
+        public E pop() {
+            // Check if Stack is empty
+            if (top == null) {
+                return null;
+            }
+
+            // Update bottom pointer if only one element left
+            if (top == bottom) {
+                bottom = null;
+            }
+
+            Node<E> popped = top;
+            top = top.next;
+
+            size--;
+            return popped.data;
+        }
+
+        /** Return the element from the top of this stack.
+         * @return the element from the top of this stack or null if this stack is empty
+         */
+        public E top() {
+            // Check if Stack is empty
+            if (top == null) {
+                return null;
+            }
+
+            return top.data;
+        }
+
+        /**
+         * Determines if this stack is equal to `obj`.
+         * @param obj an Object that is compared to this stack for equality
+         * @return true if this stack is equal to `obj` (same elements in the same order)
+         *         false, otherwise
+         */
+        public boolean equals(Object obj) {
+            // Check if Object is Stack
+            if (!(obj instanceof MyStack)) {
+                return false;
+            }
+
+            MyStack<E> o = (MyStack<E>) obj;
+
+            Node<E> a = this.top;
+            Node<E> b = o.top;
+
+            // Check if size not same
+            if (this.size != o.size) {
+                return false;
+            }
+
+            // Compare and iterate both Stacks
+            while (a != null && b != null) {
+                if (!a.data.equals(b.data))
+                    return false;
+
+                a = a.next;
+                b = b.next;
+            }
+
+            return true;
+        }
+
+        /**
+         * Returns a string representation of this stack. The string is constructed by
+         * concatenating all elements of this stack separated by a comma and a single space.
+         * The bottom of the stack should be the leftmost element and the top of the stack
+         * should be the rightmost element. There should be no comma after the last element.
+         * @return a string representation of this stack.
+         */
+        public String toString() {
+            StringBuilder listString = new StringBuilder();
+            Node<E> current = top;
+
+            // Iterate through LinkedList until null
+            while (current != null) {
+                listString.insert(0, current.data);
+
+                // Add comma only if next element exists
+                if (current.next != null) {
+                    listString.insert(0, ", ");
+                }
+
+                // End iteration
+                if (current.next == null) {
+                    break;
+                }
+
+                current = current.next;
+            }
+
+            return listString.toString().trim();
+        }
+
+        private static class Node<E> {
+            E data;
+            Node<E> next;
+
+            public Node(E data) {
+                this.data = data;
+            }
+
+            public String toString() {
+                return data.toString();
+            }
+        }
     }
 }
