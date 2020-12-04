@@ -1,5 +1,7 @@
 package project5;
 
+import project2.MeteoriteLinkedList;
+
 import java.util.Iterator;
 
 public class MeteoriteData {
@@ -29,9 +31,25 @@ public class MeteoriteData {
     }
 
     public MeteoriteData getByMass(int mass, int delta) {
+        MeteoriteData massMatches = new MeteoriteData();
         Iterator<Meteorite> iterate = storage.iterator();
 
-        return null;
+        if (mass < 0 || delta < 0) {
+            throw new IllegalArgumentException("Mass must be a positive integer.");
+        } else {
+            while (iterate.hasNext()) {
+                Meteorite temp = iterate.next();
+                if (temp.getMass() >= mass - delta && temp.getMass() <= mass + delta && temp.getMass() != 0) {
+                    massMatches.add(temp);
+                }
+            }
+
+            if (massMatches.storage.isEmpty()) {
+                return null;
+            }
+        }
+
+        return massMatches;
     }
 
     // One Test Case
