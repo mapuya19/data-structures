@@ -55,6 +55,7 @@ public class MeteoriteDataGetByYear {
     @Test
     public void getByYearArbitrary3() {
         Iterator<Meteorite> it = TEST_METEORITE_DATA.getByYear(1866).iterator();
+        System.out.println(TEST_METEORITE_DATA.storageYearCompare.toString());
 
         assertEquals(METEORITE_12, it.next());
         assertEquals(METEORITE_18, it.next());

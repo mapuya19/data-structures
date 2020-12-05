@@ -28,7 +28,7 @@ import static org.junit.Assert.fail;
 public class FallenStarsRuns {
 
     // CHANGE THE LOCATION OF THE INPUT FILE FOR THE RUNS TO GO CORRECTLY.
-    private static final String INPUT_FILE = "src/main/resources/Meteorite_Landings.csv";
+    private static final String INPUT_FILE = "project5/Meteorite_Landings.csv";
 
     /**
      * Test to make sure that the input file exists.

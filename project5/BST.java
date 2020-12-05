@@ -315,7 +315,7 @@ public class BST < T extends Comparable <T> > {
     }
 
     private class BSTIterator implements Iterator<T> {
-        private final MyStack<BSTNode> stack = new MyStack<BSTNode>();
+        private final MyStack<BSTNode> stack = new MyStack<>();
 
         public BSTIterator() {
             pushIt(root);
@@ -346,19 +346,27 @@ public class BST < T extends Comparable <T> > {
             throw new NullPointerException("Parameter is null");
         }
 
-        if (fromElement.compareTo(toElement) > 0) {
+        int comp;
+
+        if (comparator == null ) {
+            comp = fromElement.compareTo(toElement);
+        } else {
+            comp = comparator.compare(fromElement, toElement);
+        }
+
+        if (comp > 0) {
             throw new IllegalArgumentException("fromElement cannot be greater than toElement");
         }
 
         if (this.isEmpty()) {
-            return new ArrayList<T>();
+            return new ArrayList<>();
         }
 
-        if (fromElement.compareTo(toElement) == 0 && this.contains(fromElement)) {
-            ArrayList<T> edgeCaseEquals = new ArrayList<T>();
-            edgeCaseEquals.add(fromElement);
-            return edgeCaseEquals;
-        }
+//        if (fromElement.compareTo(toElement) == 0 && this.contains(fromElement) && this.size == 1) {
+//            ArrayList<T> edgeCaseEquals = new ArrayList<>();
+//            edgeCaseEquals.add(fromElement);
+//            return edgeCaseEquals;
+//        }
 
         var rangedList = new ArrayList<T>();
         helperGetRange(root, rangedList, fromElement, toElement);
@@ -370,8 +378,16 @@ public class BST < T extends Comparable <T> > {
         if (node == null)
             return;
 
-        int from = fromElement.compareTo(node.data);
-        int to = toElement.compareTo(node.data);
+        int from;
+        int to;
+
+        if (comparator == null ) {
+            from = fromElement.compareTo(node.data);
+            to = toElement.compareTo(node.data);
+        } else {
+            from = comparator.compare(fromElement, node.data);
+            to = comparator.compare(toElement, node.data);
+        }
 
         if (from < 0) {
             helperGetRange(node.left, ranged, fromElement, toElement);
@@ -472,7 +488,7 @@ public class BST < T extends Comparable <T> > {
 
     public Object[] toArray() {
         Iterator<T> iterate = this.iterator();
-        ArrayList<T> tempArray = new ArrayList<T>();
+        ArrayList<T> tempArray = new ArrayList<>();
 
         while (iterate.hasNext()) {
             tempArray.add(iterate.next());

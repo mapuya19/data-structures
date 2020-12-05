@@ -76,12 +76,12 @@ public class Location {
     public boolean equals(Object o) {
         Location loc = (Location) o;
 
+        if (o == null) {
+            return false;
+        }
+
         if (o == this || (loc.lat == this.lat && loc.lng == this.lng)) {
             return true; 
-        }
-        
-        if (o == null) {
-            return false; 
         }
 
         return Math.abs(loc.lat - this.lat) < 0.00001 && Math.abs(loc.lng - this.lng) < 0.0001;

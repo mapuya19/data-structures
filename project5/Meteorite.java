@@ -113,6 +113,10 @@ public class Meteorite implements Comparable<Meteorite> {
      */
     @Override
     public boolean equals(Object o) {
+        if (!(o instanceof Meteorite)) {
+            return false;
+        }
+
         Meteorite meteorite = (Meteorite) o;
 
         if (o == this) {
@@ -148,6 +152,12 @@ public class Meteorite implements Comparable<Meteorite> {
         if (this.location == null) {
             String latEmpty = "";
             String lngEmpty = "";
+
+            if (this.mass == 0) {
+                String massEmpty = "";
+
+                return String.format("%-20s %4s %4s %6s %10.5s %10.5s", this.name, id, year, massEmpty, latEmpty, lngEmpty);
+            }
 
             return String.format("%-20s %4s %4s %6s %10.5s %10.5s", this.name, id, year, mass, latEmpty, lngEmpty);
         } else {
