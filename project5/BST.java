@@ -1,7 +1,4 @@
 package project5;
-
-import project3.MyStack;
-
 import java.util.*;
 
 public class BST < T extends Comparable <T> > {
@@ -442,8 +439,16 @@ public class BST < T extends Comparable <T> > {
 
     // O(N)
     public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+
         if (!(obj instanceof BST)) {
             return false;
+        }
+
+        if (this == obj) {
+            return true;
         }
 
         BST<T> compare = (BST<T>) obj;
@@ -456,7 +461,7 @@ public class BST < T extends Comparable <T> > {
         Iterator<T> second = compare.iterator();
 
         while (first.hasNext()) {
-            if (first.next() != second.next()) {
+            if (!first.next().equals(second.next())) {
                 return false;
             }
         }

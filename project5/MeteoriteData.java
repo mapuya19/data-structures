@@ -16,6 +16,10 @@ public class MeteoriteData {
     }
 
     public boolean add(Meteorite m) {
+        if (m == null) {
+            return false;
+        }
+
         if (!storage.contains(m)) {
             storage.add(m);
             storageMassCompare.add(m);
@@ -32,11 +36,13 @@ public class MeteoriteData {
         }
 
         MeteoriteData compare = (MeteoriteData) obj;
+//        System.out.println(this.storage);
+//        System.out.println("SEPARATOR =-=-=-=-=-=-=-=-=-=-=-=-");
+//        System.out.println(compare);
 
         return this.storage.equals(compare.storage);
     }
 
-    // Two Test Cases Failed(?) --> print correct, iterator test wrong
     public MeteoriteData getByMass(int mass, int delta) {
         if (mass < 0 || delta < 0) {
             throw new IllegalArgumentException("Mass must be a positive integer.");
@@ -48,8 +54,8 @@ public class MeteoriteData {
 
         MeteoriteData massMatches = new MeteoriteData();
 
-        Meteorite lowMeteorite = new Meteorite("LowerTest", 1337);
-        Meteorite highMeteorite = new Meteorite("HigherTest", 1337);
+        Meteorite lowMeteorite = new Meteorite("LowerTest", 1);
+        Meteorite highMeteorite = new Meteorite("HigherTest", 999999);
 
         lowMeteorite.setMass(mass - delta);
         highMeteorite.setMass(mass + delta);
@@ -68,7 +74,6 @@ public class MeteoriteData {
         return massMatches;
     }
 
-    // One Test Case Failed
     public Meteorite getByLocation(Location loc) {
         if (loc == null) {
             throw new IllegalArgumentException("Location must not be null.");
@@ -78,18 +83,21 @@ public class MeteoriteData {
             return null;
         }
 
+//        Iterator<Meteorite> iterate = storage.iterator();
+        double smallestDistance = 9999999;
+
+//        while (iterate.hasNext()) {
+//            Meteorite temp = iterate.next();
+//
+//            if (temp.getLocation() != null) {
+//                smallestDistance = loc.getDistance(temp.getLocation());
+//                break;
+//            }
+//        }
+
+        Meteorite nearest = new Meteorite("a", 999999);
+
         Iterator<Meteorite> iterate = storage.iterator();
-        double smallestDistance = 0;
-
-        while (iterate.hasNext()) {
-            if (iterate.next().getLocation() != null) {
-                smallestDistance = loc.getDistance(iterate.next().getLocation());
-                break;
-            }
-        }
-
-        Meteorite nearest = new Meteorite("nearest", 1337);
-
         while (iterate.hasNext()) {
             Meteorite temp = iterate.next();
 
@@ -110,7 +118,6 @@ public class MeteoriteData {
         return nearest;
     }
 
-    // No Test Cases Passed
     public MeteoriteData getByYear(int year) {
         if (year <= 0 || year >= 2020) {
             throw new IllegalArgumentException("Year must be a positive integer less than the current year.");
@@ -128,7 +135,7 @@ public class MeteoriteData {
         highYear.setYear(year);
 
         ArrayList<Meteorite> yearList = storageYearCompare.getRange(lowYear, highYear);
-        System.out.println(yearList.toString());
+//        System.out.println(yearList.toString());
 
 //        if (yearList.size() == 0) {
 //            return null;
@@ -146,8 +153,14 @@ public class MeteoriteData {
     }
 
     public boolean remove(Meteorite m) {
+        if (m == null) {
+            throw new NullPointerException("Meteorite is null");
+        }
+
         if (storage.contains(m)) {
             storage.remove(m);
+            storageMassCompare.remove(m);
+            storageYearCompare.remove(m);
             return true;
         }
 
@@ -190,5 +203,18 @@ public class MeteoriteData {
 
             return 0;
         }
+    }
+
+    public String toString() {
+        StringBuilder output = new StringBuilder();
+        Iterator<Meteorite> iterate = iterator();
+
+        while(iterate.hasNext()){
+            Meteorite temp = iterate.next();
+
+            output.append(temp.toString()).append("\n");
+        }
+
+        return output.toString().trim();
     }
 }
