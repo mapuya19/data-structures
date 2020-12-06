@@ -1,6 +1,12 @@
 package project5;
 import java.util.*;
 
+/**
+ * This class represents a general Binary Search Tree.
+ * @author Matthew Apuya
+ * @version 12/6/20
+ * @param <T>
+ */
 public class BST < T extends Comparable <T> > {
 //    public static void main( String [] args ){
 //        BST<String> tree = new BST<>();
@@ -263,66 +269,102 @@ public class BST < T extends Comparable <T> > {
         }
     }
 
+    /**
+     * Method for checking if object passed already exists in BST
+     * @param o element to be checked
+     * @return true if element passed found, false otherwise
+     * @throws ClassCastException if element passed not comparable
+     * @throws NullPointerException if element passed is null
+     */
     public boolean contains(Object o) throws ClassCastException, NullPointerException {
+        // Check if o is null
         if (o == null) {
             throw new NullPointerException("Object is null");
         }
 
+        // Check if o is comparable
         if (!(o instanceof Comparable<?>)) {
             throw new ClassCastException("Object not comparable");
         }
 
+        // Check if BST is empty
         if (size == 0) {
             return false;
         }
 
         BSTNode checkThis = new BSTNode((T) o);
 
+        // Check if root is object to look for
         if (root.data.equals(checkThis.data)) {
             return true;
         }
 
+        // Recursively loop until object found
         return recursiveContains(this.root, checkThis);
     }
 
+    /**
+     * Actual recursive implementation of contains method: find node specified
+     * @param root Subtree to look at (starts at root)
+     * @param checkThis Node with element data to be found
+     * @return true if value found, false otherwise
+     */
     private boolean recursiveContains(BSTNode root, BSTNode checkThis) {
+        // Value for comparison
         int compareValue = checkThis.compareTo(root);
 
+        // Object found
         if (compareValue == 0)
             return true;
 
+        // Check left subtree
         if (compareValue < 0 && root.left != null) {
             return recursiveContains(root.left, checkThis);
         }
 
+        // Check right subtree
         if (compareValue > 0 && root.right != null) {
             return recursiveContains(root.right, checkThis);
         }
 
+        // Object not found
         return false;
     }
 
+    /**
+     * Method to check if BST is empty
+     * @return true if root is null, false otherwise
+     */
     public boolean isEmpty() {
         return root == null;
     }
 
-    // Implemented with Stack
+    /**
+     * Method that creates iterator for BST; implemented with MyStack from Project 3
+     * @return an iterator object for BST with natural ordering unless specified otherwise
+     */
     public Iterator<T> iterator() {
         return new BSTIterator();
     }
 
+    /**
+     * Private overridden iterator object
+     */
     private class BSTIterator implements Iterator<T> {
         private final MyStack<BSTNode> stack = new MyStack<>();
 
+        // Push all BSTNodes to stack
         public BSTIterator() {
             pushIt(root);
         }
 
+        // Check if stack not empty
         @Override
         public boolean hasNext() {
             return !stack.empty();
         }
 
+        // Pop next node and update stack
         @Override
         public T next() {
             BSTNode nextNode = stack.pop();
@@ -330,6 +372,7 @@ public class BST < T extends Comparable <T> > {
             return nextNode.data;
         }
 
+        // Method for pushing nodes to stack
         private void pushIt(BSTNode node){
             if (node != null){
                 stack.push(node);
@@ -338,23 +381,34 @@ public class BST < T extends Comparable <T> > {
         }
     }
 
-    public ArrayList<T> getRange(T fromElement, T toElement) {
+    /**
+     * Method to get all elements in specified range (according to comparator given)
+     * @param fromElement Element to start list at
+     * @param toElement Element to end list at
+     * @return ArrayList that contains elements starting at fromElement until toElement
+     * @throws NullPointerException if parameters are invalid
+     * @throws IllegalArgumentException if fromElement greater than toElement
+     */
+    public ArrayList<T> getRange(T fromElement, T toElement) throws NullPointerException, IllegalArgumentException {
+        // Check if parameters are null
         if (fromElement == null || toElement == null) {
             throw new NullPointerException("Parameter is null");
         }
 
         int comp;
 
+        // Switch comparator if one specified
         if (comparator == null ) {
             comp = fromElement.compareTo(toElement);
         } else {
             comp = comparator.compare(fromElement, toElement);
         }
 
+        // Make sure toElement not greater than fromElement
         if (comp > 0) {
             throw new IllegalArgumentException("fromElement cannot be greater than toElement");
         }
-
+        // Check if fromElement is empty
         if (this.isEmpty()) {
             return new ArrayList<>();
         }
@@ -365,19 +419,29 @@ public class BST < T extends Comparable <T> > {
 //            return edgeCaseEquals;
 //        }
 
+        // Recursive call
         var rangedList = new ArrayList<T>();
         helperGetRange(root, rangedList, fromElement, toElement);
 
         return rangedList;
     }
 
+    /**
+     * Actual recursive implementation of getRange method: update ArrayList in getRange
+     * @param node Node being compared
+     * @param ranged Array being updated
+     * @param fromElement Element to start list at
+     * @param toElement Element to end list at
+     */
     public void helperGetRange(BSTNode node, ArrayList<T> ranged, T fromElement, T toElement) {
+        // If leaf node reached, go back up
         if (node == null)
             return;
 
         int from;
         int to;
 
+        // Check if comparator specified in BST
         if (comparator == null ) {
             from = fromElement.compareTo(node.data);
             to = toElement.compareTo(node.data);
@@ -386,20 +450,29 @@ public class BST < T extends Comparable <T> > {
             to = comparator.compare(toElement, node.data);
         }
 
+        // Traverse left
         if (from < 0) {
             helperGetRange(node.left, ranged, fromElement, toElement);
         }
 
+        // If within range, add to list
         if (from <= 0 && to >= 0) {
             ranged.add(node.data);
         }
 
+        // Traverse right
         if (to > 0) {
             helperGetRange(node.right, ranged, fromElement, toElement);
         }
     }
 
-    public T first() {
+    /**
+     * Method for retrieving first Node
+     * @return data of smallest BST Node
+     * @throws NoSuchElementException if tree is empty
+     */
+    public T first() throws NoSuchElementException {
+        // Check if tree is empty
         if (root == null) {
             throw new NoSuchElementException("Tree is empty");
         }
@@ -407,6 +480,11 @@ public class BST < T extends Comparable <T> > {
         return minValue(root);
     }
 
+    /**
+     * Actual recursive implementation of first: find leftmost Node
+     * @param node BSTNode being checked
+     * @return data of smallest BSTNode
+     */
     public T minValue(BSTNode node) {
         BSTNode check = node;
 
@@ -418,7 +496,13 @@ public class BST < T extends Comparable <T> > {
         return (check.data);
     }
 
-    public T last() {
+    /**
+     * Method for retrieving last Node
+     * @return data of largest BSTNode
+     * @throws NoSuchElementException if tree is empty
+     */
+    public T last() throws NoSuchElementException {
+        // Check if tree is empty
         if (root == null) {
             throw new NoSuchElementException("Tree is empty");
         }
@@ -426,6 +510,11 @@ public class BST < T extends Comparable <T> > {
         return maxValue(root);
     }
 
+    /**
+     * Actual recursive implementation of last: find rightmost Node
+     * @param node BSTNode being checked
+     * @return data of largest BSTNode
+     */
     public T maxValue(BSTNode node) {
         BSTNode check = node;
 
@@ -437,22 +526,30 @@ public class BST < T extends Comparable <T> > {
         return (check.data);
     }
 
-    // O(N)
+    /**
+     * Method for checking if two BSTs are equal
+     * @param obj BST being compared to
+     * @return true if BSTs are equal, false otherwise
+     */
     public boolean equals(Object obj) {
+        // Check if obj being compared to is null
         if (obj == null) {
             return false;
         }
 
+        // Check if obj is not BST
         if (!(obj instanceof BST)) {
             return false;
         }
 
+        // Check if obj is BST itself
         if (this == obj) {
             return true;
         }
 
         BST<T> compare = (BST<T>) obj;
 
+        // Check if sizes of BSTs are same
         if (this.size() != compare.size()) {
             return false;
         }
@@ -460,6 +557,7 @@ public class BST < T extends Comparable <T> > {
         Iterator<T> first = this.iterator();
         Iterator<T> second = compare.iterator();
 
+        // Iterate through both BSTs to check if both contain same elements
         while (first.hasNext()) {
             if (!first.next().equals(second.next())) {
                 return false;
@@ -469,9 +567,14 @@ public class BST < T extends Comparable <T> > {
         return true;
     }
 
+    /**
+     * Method to stringify BST
+     * @return String representation of BST
+     */
     public String toString() {
         StringBuilder buildString = new StringBuilder();
 
+        // Check if BST is empty
         if (this.isEmpty()) {
             return ("[]");
         }
@@ -479,6 +582,7 @@ public class BST < T extends Comparable <T> > {
         Iterator<T> iterate = this.iterator();
         buildString.append("[");
 
+        // Iterate through BSTNodes, separating by comma
         while (iterate.hasNext()) {
             buildString.append(iterate.next());
 
@@ -491,6 +595,10 @@ public class BST < T extends Comparable <T> > {
         return buildString.toString();
     }
 
+    /**
+     * Method to convert BST to Array
+     * @return Array object with same elements as BST
+     */
     public Object[] toArray() {
         Iterator<T> iterate = this.iterator();
         ArrayList<T> tempArray = new ArrayList<>();
